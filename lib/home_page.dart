@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dialogs/dialogs.dart';
 import 'constants.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
           child: Center(
             child: CircleAvatar(
               radius: 20,
-              backgroundColor: kSecondaryColor,
+              backgroundColor: kPrimaryBgColor,
               child: Icon(
                 Icons.person_outline,
                 color: kPrimaryTextColor,
@@ -33,11 +34,25 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.add_circle),
             color: kPrimarySelectionColor,
             iconSize: 35,
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => FutureDialog(
+                  future: Future.delayed(Duration(seconds: 3)),
+                  hasData: (_) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(kInfoPageRoute);
+                    });
+                    return CommonAlertDialog(
+                        'Successfully connected to a device.');
+                  },
+                ),
+              );
+            },
           ),
         ],
       ),
-      backgroundColor: kSecondaryColor,
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         items: [
@@ -50,8 +65,6 @@ class _HomePageState extends State<HomePage> {
             title: Text('Me'),
           ),
         ],
-        selectedItemColor: kPrimarySelectionColor,
-        unselectedItemColor: kPrimaryTextColor,
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {

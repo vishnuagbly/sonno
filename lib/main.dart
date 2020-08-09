@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sonno/aqi_info_page.dart';
+import 'package:sonno/constants.dart';
 import 'package:sonno/home_page.dart';
 
 void main() {
@@ -7,11 +9,12 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sonno',
-      theme: ThemeData(
+      theme: ThemeData.dark().copyWith(
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -21,13 +24,28 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: kPrimaryBgColor,
+        backgroundColor: kPrimaryColor,
+        toggleableActiveColor: kPrimarySelectionColor,
+        accentColor: kPrimarySelectionColor,
+        unselectedWidgetColor: kPrimaryTextColor,
+        bottomAppBarColor: kPrimaryColor,
+        primaryColor: kPrimaryColor,
+        buttonColor: kPrimarySelectionColor,
+        cardColor: kPrimaryColor,
+        secondaryHeaderColor: kPrimaryColor,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: kPrimaryColor,
+        ),
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      routes: {
+        kHomePageRoute: (context) => HomePage(),
+        kInfoPageRoute: (context) => InfoPage(),
+      },
     );
   }
 }
