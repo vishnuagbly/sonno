@@ -13,35 +13,45 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Container(
+          child: Center(
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: kSecondaryColor,
+              child: Icon(
+                Icons.person_outline,
+                color: kPrimaryTextColor,
+                size: 30,
+              ),
+            ),
+          ),
+        ),
         backgroundColor: kPrimaryColor,
+        elevation: 0,
         actions: [
           IconButton(
             icon: Icon(Icons.add_circle),
             color: kPrimarySelectionColor,
-            iconSize: 23,
+            iconSize: 35,
             onPressed: () {},
           ),
         ],
       ),
       backgroundColor: kSecondaryColor,
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: kPrimaryTextColor,
-            ),
+            icon: Icon(Icons.home),
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.account_circle,
-              color: kPrimaryTextColor,
-            ),
+            icon: Icon(Icons.account_circle),
             title: Text('Me'),
           ),
         ],
         selectedItemColor: kPrimarySelectionColor,
+        unselectedItemColor: kPrimaryTextColor,
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
