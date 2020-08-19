@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sonno/aqi_info_page.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/home_page.dart';
 
@@ -44,7 +43,6 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         kHomePageRoute: (context) => HomePage(),
-        kInfoPageRoute: (context) => InfoPage(),
       },
     );
   }
