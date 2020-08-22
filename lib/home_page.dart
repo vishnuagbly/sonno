@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sonno/aqi_info_page.dart';
 import 'package:sonno/network.dart';
 import 'constants.dart';
+import 'objects/connecting_dummy_data.dart';
 import 'objects/device.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InfoPage(_devices[i].name),
+                        builder: (context) => InfoPage(stations[0]),
                       ));
                 },
               ),

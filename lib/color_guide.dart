@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 
 class ColorGuide extends StatelessWidget {
-  const ColorGuide({
-    Key key,
-    @required this.screenWidth,
-  }) : super(key: key);
-
-  final double screenWidth;
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 150,
       color: Colors.white12,

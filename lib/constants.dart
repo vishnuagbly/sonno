@@ -24,3 +24,14 @@ List<ColorIndicator> colorIndicators = [
   ColorIndicator(Colors.deepPurple, 'Severe', 300, 400),
   ColorIndicator(Colors.red, 'Hazardous', 400, 500),
 ];
+
+const List<String> parameters = [
+  'PM2.5',
+  'PM10',
+  'NO2',
+  'NH3',
+  'CO',
+  'SO2',
+  'O3',
+  'AQI',
+];
