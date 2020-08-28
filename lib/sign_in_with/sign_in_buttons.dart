@@ -15,7 +15,9 @@ class GoogleSignInButton extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) => FutureDialog(
-            future: signInWithGoogle(trailingFunc: (uuid) async => Network.setAuthId(uuid)),
+            future: signInWithGoogle(
+              trailingFunc: (uuid) async => Network.setAuthId(uuid),
+            ),
             hasData: (uuid) {
               return CommonAlertDialog(
                 'Successfully logged in',
