@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
-import 'package:sonno/info_sub_pages/aqi_parameters.dart';
-import 'package:sonno/info_sub_pages/dashboard.dart';
-import 'package:sonno/info_sub_pages/health_advice.dart';
+import 'package:sonno/info_sub_pages/info_sub_pages.dart';
 import 'package:sonno/objects/aqi_info.dart';
 import 'package:sonno/objects/station_info.dart';
 
