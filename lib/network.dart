@@ -12,7 +12,7 @@ import 'objects/device.dart';
 class Network {
   static var _firestore = FirebaseFirestore.instance;
   static var _dataMap = dummyMap;
-  static String authId;
+  static String _authId;
 
   static List<Device> _devices = [];
 
@@ -30,8 +30,22 @@ class Network {
 
   static setAuthId(String uuid) async {
     final prefs = await SharedPreferences.getInstance();
-    authId = uuid;
+    _authId = uuid;
     await prefs.setString('uuid', uuid);
+  }
+
+  static Future<bool> get signedIn async {
+    if(_authId == null) {
+      await getAndSetAuthId();
+      if(_authId == null)
+        return false;
+    }
+    return true;
+  }
+
+  static Future<void> getAndSetAuthId() async {
+    final prefs = await SharedPreferences.getInstance();
+    _authId = prefs.getString('uuid');
   }
 
   static Future<bool> checkWifi() async {

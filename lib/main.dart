@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
-import 'pages/home_page.dart';
+import 'network.dart';
+import 'pages/pages.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Network.initApp();
   runApp(MyApp());
 }
 
@@ -42,6 +45,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
+        kLoginPageRoute: (context) => LoginPage(),
         kHomePageRoute: (context) => HomePage(),
       },
     );

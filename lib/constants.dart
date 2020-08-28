@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'objects/color_indicator.dart';
 
-const kHomePageRoute = '/';
+const kHomePageRoute = '/home_page';
 const kInfoPageRoute = '/info_page';
+const kLoginPageRoute = '/';
 
 const kPrimaryColor = Color(0xff202020);
 const kPrimaryBgColor = Color(0xff121212);
