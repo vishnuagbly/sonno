@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sonno/objects/connecting_dummy_data.dart';
 import 'package:sonno/objects/dummy_data.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +12,7 @@ import 'objects/device.dart';
 class Network {
   static var _firestore = FirebaseFirestore.instance;
   static var _dataMap = dummyMap;
+  static String authId;
 
   static List<Device> _devices = [];
 
@@ -26,10 +28,15 @@ class Network {
     await _firestore.collection('allData').doc('data').set(_dataMap);
   }
 
+  static setAuthId(String uuid) async {
+    final prefs = await SharedPreferences.getInstance();
+    authId = uuid;
+    await prefs.setString('uuid', uuid);
+  }
+
   static Future<bool> checkWifi() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if(connectivityResult == ConnectivityResult.wifi)
-      return true;
+    if (connectivityResult == ConnectivityResult.wifi) return true;
     return false;
   }
 
@@ -47,13 +54,12 @@ class Network {
     ];
 
     for (int i = 0; i < 3; i++) {
-      await Future.delayed(Duration(seconds: 2))
-          .then((value) {
-            if(!_devices.contains(devices[i])){
-              _devices.add(devices[i]);
-              _devicesController.add(_devices);
-            }
-          });
+      await Future.delayed(Duration(seconds: 2)).then((value) {
+        if (!_devices.contains(devices[i])) {
+          _devices.add(devices[i]);
+          _devicesController.add(_devices);
+        }
+      });
     }
   }
 

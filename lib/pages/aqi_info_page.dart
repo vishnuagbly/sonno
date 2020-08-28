@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
-import 'package:sonno/info_sub_pages/info_sub_pages.dart';
-import 'objects/objects.dart';
+import 'package:sonno/pages/info_sub_pages/info_sub_pages.dart';
+import '../objects/objects.dart';
 
-import 'color_guide.dart';
-import 'objects/parameter.dart';
+import '../color_guide.dart';
+import '../objects/parameter.dart';
 
 class InfoPage extends StatefulWidget {
   InfoPage(this.stationInfo);

@@ -4,7 +4,7 @@ import 'package:sonno/objects/parameter.dart';
 import 'package:sonno/objects/aqi_info.dart';
 import 'package:sonno/objects/station_info.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class AqiParameters extends StatefulWidget {
   AqiParameters(this.stationInfo);

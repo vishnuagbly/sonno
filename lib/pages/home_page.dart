@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sonno/aqi_info_page.dart';
+import 'aqi_info_page.dart';
 import 'package:sonno/dialogs/dialogs.dart';
 import 'package:sonno/network.dart';
-import 'constants.dart';
-import 'objects/device.dart';
+import '../constants.dart';
+import '../objects/device.dart';
 
 class HomePage extends StatefulWidget {
   @override
