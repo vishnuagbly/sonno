@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/extensions/double_extensions.dart';
-import 'package:sonno/objects/Parameter.dart';
+import 'package:sonno/objects/parameter.dart';
 import 'package:sonno/objects/aqi_info.dart';
 import 'package:sonno/objects/station_info.dart';
 

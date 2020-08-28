@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
 
-import 'Parameter.dart';
+import 'parameter.dart';
 
 class AqiInfo {
   final DateTime dateTime;
