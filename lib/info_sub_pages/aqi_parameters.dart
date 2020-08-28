@@ -6,30 +6,100 @@ import 'package:sonno/objects/station_info.dart';
 
 import '../constants.dart';
 
-class AqiParameters extends StatelessWidget {
+class AqiParameters extends StatefulWidget {
   AqiParameters(this.stationInfo);
 
   final StationInfo stationInfo;
 
   @override
+  _AqiParametersState createState() => _AqiParametersState();
+}
+
+class _AqiParametersState extends State<AqiParameters> {
+  Parameter _parameter = Parameter.aqi;
+  int _lastHours = 24;
+
+  static const List<int> _lastHoursOpts = [
+    24,
+    15,
+    10,
+    5,
+  ];
+
+  static const List<String> _type = [
+    'Avg',
+    'Max',
+    'Min',
+  ];
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return ListView(
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white12,
-            borderRadius: BorderRadius.circular(screenWidth * 0.05),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white12,
+        borderRadius: BorderRadius.circular(screenWidth * 0.05),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DropdownButton<Parameter>(
+                value: _parameter,
+                underline: Container(),
+                onChanged: (value) {
+                  setState(() {
+                    _parameter = value;
+                  });
+                },
+                items: List.generate(
+                  parameters.length,
+                  (index) => DropdownMenuItem(
+                    value: Parameter.values.elementAt(index),
+                    child: Text(
+                      parameters[index],
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.05,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DropdownButton<int>(
+                value: _lastHours,
+                underline: Container(),
+                onChanged: (value) {
+                  setState(() {
+                    _lastHours = value;
+                  });
+                },
+                items: List.generate(
+                  _lastHoursOpts.length,
+                  (index) => DropdownMenuItem(
+                    value: _lastHoursOpts[index],
+                    child: Text(
+                      'last ${_lastHoursOpts[index].toString()} hours',
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.04,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          child: Column(
+          Column(
             children: List.generate(
-              5,
+              3,
               (index) {
-                int flex = stationInfo.allAvgAqi[index].toInt();
-                int max = stationInfo.allAvgAqi.getMax(
-                  exclude: [stationInfo.getAvg(Parameter.aqi)],
+                int flex = getFlex(index);
+                int max = widget.stationInfo
+                    .allMaxParameters(lastHours: _lastHours)
+                    .getMax(
+                  exclude: [widget.stationInfo.getAvg(Parameter.aqi)],
                 ).toInt();
                 max += max ~/ 10;
                 return Column(
@@ -50,12 +120,16 @@ class AqiParameters extends StatelessWidget {
                                       fontSize: screenWidth * 0.06,
                                     ),
                                   ),
-                                  Text(' ug/m3'),
+                                  Text(
+                                    _parameter == Parameter.aqi
+                                        ? ''
+                                        : ' \u03bcg/m\u00B3',
+                                  ),
                                 ],
                               ),
                               SizedBox(height: screenWidth * 0.01),
                               Text(
-                                '${parameters[index]}',
+                                _type[index],
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.04,
                                 ),
@@ -98,8 +172,20 @@ class AqiParameters extends StatelessWidget {
               },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
+  }
+
+  int getFlex(int index) {
+    if (index == 0)
+      return widget.stationInfo
+          .getAvg(_parameter, lastHours: _lastHours)
+          .toInt();
+    if (index == 1)
+      return widget.stationInfo
+          .getMax(_parameter, lastHours: _lastHours)
+          .toInt();
+    return widget.stationInfo.getMin(_parameter, lastHours: _lastHours).toInt();
   }
 }

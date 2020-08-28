@@ -26,12 +26,12 @@ List<ColorIndicator> colorIndicators = [
 ];
 
 const List<String> parameters = [
-  'PM2.5',
-  'PM10',
-  'NO2',
-  'NH3',
+  'PM\u2082.\u2085',
+  'PM\u2081\u2080',
+  'NO\u2082',
+  'NH\u2083',
   'CO',
-  'SO2',
-  'O3',
+  'SO\u2082',
+  'O\u2083',
   'AQI',
 ];

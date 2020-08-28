@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sonno/aqi_info_page.dart';
+import 'package:sonno/dialogs/dialogs.dart';
 import 'package:sonno/network.dart';
 import 'constants.dart';
-import 'objects/connecting_dummy_data.dart';
 import 'objects/device.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +15,15 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   List<Device> _devices = [];
   Widget body;
+  bool get _newData {
+    return Network.checkIfDataUpdated();
+  }
+
+  @override
+  void initState() {
+    Network.initApp();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -46,7 +55,8 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _devices[i].name.toUpperCase(),
+                        (_devices[i].name ?? 'Device ${_devices[i].id}')
+                            .toUpperCase(),
                         style: TextStyle(
                           fontSize: screenWidth * 0.04,
                         ),
@@ -65,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InfoPage(stations[0]),
+                        builder: (context) => InfoPage(_devices[i].stationInfo),
                       ));
                 },
               ),
@@ -83,14 +93,25 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         leading: Container(
           child: Center(
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: kPrimaryBgColor,
-              child: Icon(
-                Icons.person_outline,
-                color: kPrimaryTextColor,
-                size: 30,
+            child: InkWell(
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: kPrimaryBgColor,
+                child: Icon(
+                  Icons.person_outline,
+                  color: kPrimaryTextColor,
+                  size: 30,
+                ),
               ),
+              onTap: () {
+                if (_newData)
+                  showDialog(
+                    context: context,
+                    builder: (context) => FutureDialog<void>(
+                      future: Network.uploadData(),
+                    ),
+                  );
+              },
             ),
           ),
         ),
@@ -153,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Row(
                           children: [
-                            Text('${device.name}'),
+                            Text('${device.name ?? 'Device ${device.id}'}'),
                           ],
                         ),
                       ),

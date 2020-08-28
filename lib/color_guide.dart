@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
+///height = screenHeight * 0.1
 class ColorGuide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      height: 150,
+      height: screenHeight * 0.1,
+      constraints: BoxConstraints(
+        minHeight: screenHeight * 0.1,
+        maxHeight: screenHeight * 0.1,
+      ),
       color: Colors.white12,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Center(
@@ -31,12 +36,12 @@ class ColorGuide extends StatelessWidget {
                     Text(
                       colorIndicators[index].status,
                       style: TextStyle(
-                        fontSize: screenWidth * 0.025,
+                        fontSize: screenHeight * 0.0125,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: screenHeight * 0.01),
                     Container(
-                      height: 15,
+                      height: screenHeight * 0.012,
                       decoration: BoxDecoration(
                         color: colorIndicators[index].color,
                         borderRadius: BorderRadius.only(

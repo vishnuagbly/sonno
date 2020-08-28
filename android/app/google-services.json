@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "250759212171",
+    "firebase_url": "https://sonno-aqi.firebaseio.com",
+    "project_id": "sonno-aqi",
+    "storage_bucket": "sonno-aqi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250759212171:android:9a0b071c2cc4514911f88e",
+        "android_client_info": {
+          "package_name": "com.vishnuworld.sonno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250759212171-cg80s45mjdls24e1vb1c0j035sq6l6d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcS9n9DAyDe-gzO5pp-0BEAzyacyI9WAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250759212171-cg80s45mjdls24e1vb1c0j035sq6l6d1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
