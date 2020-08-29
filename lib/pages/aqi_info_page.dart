@@ -7,9 +7,14 @@ import '../color_guide.dart';
 import '../objects/parameter.dart';
 
 class InfoPage extends StatefulWidget {
-  InfoPage(this.stationInfo);
+  InfoPage.raw(this.device, this.stationInfo);
+
+  factory InfoPage(Device device){
+    return InfoPage.raw(device, device.stationInfo);
+  }
 
   final StationInfo stationInfo;
+  final Device device;
 
   @override
   _InfoPageState createState() => _InfoPageState();
@@ -60,7 +65,7 @@ class _InfoPageState extends State<InfoPage>
                                     CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.stationInfo.stationName,
+                                    widget.device.name,
                                     style: TextStyle(
                                       fontSize: screenHeight * 0.025,
                                       fontWeight: FontWeight.bold,
@@ -68,14 +73,6 @@ class _InfoPageState extends State<InfoPage>
                                     ),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    '${widget.stationInfo.city}, ${widget.stationInfo.state}',
-                                    style: TextStyle(
-                                      fontSize: screenHeight * 0.015,
-                                      color: Colors.white54,
-                                      height: 1,
-                                    ),
                                   ),
                                   SizedBox(height: screenHeight * 0.01),
                                   Text(
@@ -86,10 +83,7 @@ class _InfoPageState extends State<InfoPage>
                                     ),
                                   ),
                                   Text(
-                                    widget.stationInfo
-                                        .getAvg(Parameter.aqi)
-                                        .toInt()
-                                        .toString(),
+                                    widget.stationInfo.data.last.aqi.toInt().toString(),
                                     style: TextStyle(
                                       fontSize: screenHeight * 0.125,
                                       fontWeight: FontWeight.w100,

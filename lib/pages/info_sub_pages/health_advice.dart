@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sonno/objects/parameter.dart';
 import 'package:sonno/objects/station_info.dart';
 
 class HealthAdvice extends StatelessWidget {
@@ -11,7 +10,7 @@ class HealthAdvice extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     bool ventilation = true;
-    if(stationInfo.getAvg(Parameter.aqi) > 100)
+    if(stationInfo.data.last.aqi > 100)
       ventilation = false;
     return Container(
       height: screenHeight * 0.4,

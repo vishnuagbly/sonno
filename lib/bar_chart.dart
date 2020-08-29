@@ -97,7 +97,6 @@ class BarChart extends StatelessWidget {
       ),
       domainAxis: charts.OrdinalAxisSpec(
         renderSpec: charts.SmallTickRendererSpec(
-          labelRotation: screen.orientation == Orientation.portrait ? 60 : 0,
           labelStyle: charts.TextStyleSpec(
             color: charts.MaterialPalette.white,
             fontSize: (screenWidth * 0.03).toInt(),

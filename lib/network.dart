@@ -3,17 +3,15 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sonno/constants.dart';
 import 'package:sonno/objects/connecting_dummy_data.dart';
-import 'package:sonno/objects/dummy_data.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'objects/device.dart';
 
 class Network {
   static var _firestore = FirebaseFirestore.instance;
-  static var _dataMap = dummyMap;
   static String _authId;
-
   static List<Device> _devices = [];
 
   static StreamController<List<Device>> _devicesController =
@@ -25,7 +23,28 @@ class Network {
       _devicesController.stream;
 
   static Future<void> uploadData() async {
-    await _firestore.collection('allData').doc('data').set(_dataMap);
+    for (var station in stations) {
+      await _firestore
+          .collection(kStationsCollectionName)
+          .doc(station.id)
+          .set(station.toMap());
+      for (var aqiInfo in station.data) {
+        await _firestore
+            .doc(
+                '${pathToDataSubCollection(station.id)}/${aqiInfo.dateTime.toIso8601String()}')
+            .set(aqiInfo.toMap());
+      }
+    }
+  }
+
+  static Future<void> syncData() async {
+    for (var device in _devices) {
+      var station = device.stationInfo;
+      await _firestore
+          .collection(kStationsCollectionName)
+          .doc(station.id)
+          .set(station.toMap());
+    }
   }
 
   static setAuthId(String uuid) async {
@@ -35,10 +54,9 @@ class Network {
   }
 
   static Future<bool> get signedIn async {
-    if(_authId == null) {
+    if (_authId == null) {
       await getAndSetAuthId();
-      if(_authId == null)
-        return false;
+      if (_authId == null) return false;
     }
     return true;
   }
@@ -62,9 +80,9 @@ class Network {
     await checkWifi();
     clearDevices();
     List<Device> devices = [
-      Device(1, stations[0], name: 'Anand Bihar'),
-      Device(2, stations[1]),
-      Device(3, stations[2], name: 'Rampur'),
+      Device(1, stations.firstWhere((element) => element.id == 'MP001')),
+      Device(2, stations.firstWhere((element) => element.id == 'AS001')),
+      Device(3, stations.firstWhere((element) => element.id == 'DL008')),
     ];
 
     for (int i = 0; i < 3; i++) {
@@ -78,7 +96,7 @@ class Network {
   }
 
   static void clearDevices() {
-    _devices.clear();
+    if (_devices.length > 0) _devices.clear();
     _devicesController.add(_devices);
   }
 

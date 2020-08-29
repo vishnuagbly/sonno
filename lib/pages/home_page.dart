@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   List<Device> _devices = [];
   Widget body;
+
   bool get _newData {
     return Network.checkIfDataUpdated();
   }
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    Network.close();
+//    Network.close();
     super.dispose();
   }
 
@@ -71,10 +72,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 onTap: () {
+                  if (_devices[i].name == null)
+                    _devices[i].name = 'Device ${_devices[i].id}';
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => InfoPage(_devices[i].stationInfo),
+                        builder: (context) => InfoPage(_devices[i]),
                       ));
                 },
               ),
@@ -97,19 +100,23 @@ class _HomePageState extends State<HomePage> {
                 radius: 20,
                 backgroundColor: kPrimaryBgColor,
                 child: Icon(
-                  Icons.person_outline,
+                  Icons.sync,
                   color: kPrimaryTextColor,
                   size: 30,
                 ),
               ),
               onTap: () {
+                Future future;
                 if (_newData)
-                  showDialog(
-                    context: context,
-                    builder: (context) => FutureDialog<void>(
-                      future: Network.uploadData(),
-                    ),
-                  );
+                  future = Network.uploadData();
+                else
+                  future = Network.syncData();
+                showDialog(
+                  context: context,
+                  builder: (context) => FutureDialog<void>(
+                    future: future,
+                  ),
+                );
               },
             ),
           ),
@@ -158,7 +165,7 @@ class _HomePageState extends State<HomePage> {
         bool _loading = true;
         List<Widget> deviceTiles = [];
         Network.searchDevices();
-        Future.delayed(Duration(seconds: 5)).then((value) => _loading = false);
+        Future.delayed(Duration(seconds: 4, milliseconds: 500)).then((value) => _loading = false);
         return StreamBuilder<List<Device>>(
           stream: Network.availableDevicesSnapshot,
           builder: (context, snapshot) {
@@ -189,7 +196,7 @@ class _HomePageState extends State<HomePage> {
             }
             List<Widget> content = [];
             if (!_loading && deviceTiles.length == 0)
-              content.add(Text('WE GOT NOTHING'));
+              content.add(Text('NO DEVICE FOUND'));
             for (var deviceTile in deviceTiles) {
               content.add(deviceTile);
               content.add(Divider());

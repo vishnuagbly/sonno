@@ -43,6 +43,19 @@ class AqiInfo {
     );
   }
 
+  Map<String, dynamic> toMap() => {
+    'Datetime': dateTime.toIso8601String(),
+    'PM10': pm10,
+    'NO2': no2,
+    'PM2.5': pm25,
+    'NH3': nh3,
+    'CO': co,
+    'SO2': so2,
+    'O3': o3,
+    'AQI': aqi,
+    'AQI_Bucket': aqiBucket,
+  };
+
   static List<AqiInfo> fromListOfMaps(List<dynamic> maps) {
     List<AqiInfo> res = [];
     for (var map in maps) res.add(AqiInfo.fromMap(map));
@@ -50,12 +63,12 @@ class AqiInfo {
   }
 
   static String getStatusFromAqi(double aqi) {
-    if (aqi > 400) return 'Hazardous';
-    if (aqi > 300) return 'Severe';
-    if (aqi > 200) return 'Unhealthy';
-    if (aqi > 100) return 'Poor';
-    if (aqi > 50) return 'Moderate';
-    return 'Good';
+    if (aqi > 400) return colorIndicators[5].status;
+    if (aqi > 300) return colorIndicators[4].status;
+    if (aqi > 200) return colorIndicators[3].status;
+    if (aqi > 100) return colorIndicators[2].status;
+    if (aqi > 50) return colorIndicators[1].status;
+    return colorIndicators[0].status;
   }
 
   double getValueFromParameter(Parameter parameter) =>

@@ -6,6 +6,11 @@ const kHomePageRoute = '/home_page';
 const kInfoPageRoute = '/info_page';
 const kLoginPageRoute = '/';
 
+const kStationsCollectionName = 'stations';
+const kStationDataSubCollectionName = 'data';
+String pathToDataSubCollection(String stationId) =>
+    '$kStationsCollectionName/$stationId/$kStationDataSubCollectionName';
+
 const kPrimaryColor = Color(0xff202020);
 const kPrimaryBgColor = Color(0xff121212);
 const kPrimarySelectionColor = Colors.deepPurple;
@@ -19,11 +24,11 @@ double alertDialogButtonTextSize(double screenWidth) => screenWidth * 0.04;
 
 List<ColorIndicator> colorIndicators = [
   ColorIndicator(Colors.green, 'Good', 0, 50),
-  ColorIndicator(Colors.amber, 'Moderate', 50, 100),
-  ColorIndicator(Colors.deepOrange, 'Poor', 100, 200),
-  ColorIndicator(Colors.pink, 'Unhealthy', 200, 300),
-  ColorIndicator(Colors.deepPurple, 'Severe', 300, 400),
-  ColorIndicator(Colors.red, 'Hazardous', 400, 500),
+  ColorIndicator(Colors.amber, 'Satisfactory', 50, 100),
+  ColorIndicator(Colors.deepOrange, 'Moderate', 100, 200),
+  ColorIndicator(Colors.pink, 'Poor', 200, 300),
+  ColorIndicator(Colors.deepPurple, 'Very Poor', 300, 400),
+  ColorIndicator(Colors.red, 'Severe', 400, 500),
 ];
 
 const List<String> parameters = [

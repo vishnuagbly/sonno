@@ -4,17 +4,17 @@ import 'package:sonno/objects/aqi_info.dart';
 import 'parameter.dart';
 
 class StationInfo {
-  final String stationId;
+  final String id;
   final double lat;
   final double lng;
   final String status;
   final String city;
   final String state;
   final String stationName;
-  final List<AqiInfo> data;
+  List<AqiInfo> data;
 
   StationInfo.raw({
-    this.stationId,
+    this.id,
     this.lat,
     this.lng,
     this.status,
@@ -25,17 +25,31 @@ class StationInfo {
   });
 
   factory StationInfo.fromMap(Map<String, dynamic> map) {
+    var tempDataMap = map['data'];
+    var tempData;
+    if(tempDataMap != null)
+      tempData = AqiInfo.fromListOfMaps(tempDataMap);
+
     return StationInfo.raw(
-      stationId: map['StationId'],
+      id: map['StationId'],
       stationName: map['StationName'],
       city: map['City'],
       state: map['State'],
       status: map['Status'],
       lat: map['lat'],
       lng: map['lng'],
-      data: AqiInfo.fromListOfMaps(map['data']),
+      data: tempData,
     );
   }
+
+  Map<String, dynamic> toMap() => {
+    'StationId': id,
+    'StationName': stationName,
+    'City': city,
+    'State': state,
+    'lat': lat,
+    'lng': lng,
+  };
 
   static List<StationInfo> fromListOfMaps(List<dynamic> maps) {
     List<StationInfo> res = [];
@@ -72,10 +86,14 @@ class StationInfo {
   double getAvg(Parameter parameter, {int lastHours = 24}) {
     if (data == null) return 0;
     double res = 0;
-    for (var info in data)
-      if (info.dateTime.difference(data[0].dateTime).inHours <= lastHours)
+    int totalDataConsidered = 0;
+    for (var info in data) {
+      if (info.dateTime.difference(data[0].dateTime).inHours <= lastHours) {
         res += info.getValueFromParameter(parameter);
-    return res / data.length;
+        totalDataConsidered++;
+      }
+    }
+    return res / totalDataConsidered;
   }
 
   double getMin(Parameter parameter, {int lastHours = 24}) {
