@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/dialogs/dialogs.dart';
+import 'package:sonno/main_profile.dart';
 import 'package:sonno/sign_in_with/sign_in_with_google.dart';
-
-import '../network.dart';
 
 class GoogleSignInButton extends StatelessWidget {
   @override
@@ -16,7 +15,7 @@ class GoogleSignInButton extends StatelessWidget {
           context: context,
           builder: (context) => FutureDialog(
             future: signInWithGoogle(
-              trailingFunc: (uuid) async => Network.setAuthId(uuid),
+              trailingFunc: (uuid) async => MainProfile.setAuthId(uuid),
             ),
             hasData: (uuid) {
               return CommonAlertDialog(

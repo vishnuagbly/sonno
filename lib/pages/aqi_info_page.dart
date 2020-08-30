@@ -7,14 +7,9 @@ import '../color_guide.dart';
 import '../objects/parameter.dart';
 
 class InfoPage extends StatefulWidget {
-  InfoPage.raw(this.device, this.stationInfo);
-
-  factory InfoPage(Device device){
-    return InfoPage.raw(device, device.stationInfo);
-  }
+  InfoPage(this.stationInfo);
 
   final StationInfo stationInfo;
-  final Device device;
 
   @override
   _InfoPageState createState() => _InfoPageState();
@@ -65,7 +60,7 @@ class _InfoPageState extends State<InfoPage>
                                     CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    widget.device.name,
+                                    widget.stationInfo.name,
                                     style: TextStyle(
                                       fontSize: screenHeight * 0.025,
                                       fontWeight: FontWeight.bold,

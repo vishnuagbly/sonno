@@ -5,34 +5,49 @@ import 'parameter.dart';
 
 class StationInfo {
   final String id;
+  final int _hashCode;
   final double lat;
   final double lng;
   final String status;
   final String city;
   final String state;
-  final String stationName;
+  String _name;
   List<AqiInfo> data;
 
-  StationInfo.raw({
+  String get name {
+    if (_name != null) return _name;
+    return 'Device $id';
+  }
+
+  set name(String value) => _name = value;
+
+  @override
+  int get hashCode => _hashCode;
+
+  @override
+  bool operator ==(Object other) => other is StationInfo && other.id == this.id;
+
+  StationInfo.raw(
+    this._hashCode, {
     this.id,
     this.lat,
     this.lng,
     this.status,
     this.state,
-    this.stationName,
+    String name,
     this.data,
     this.city,
-  });
+  }) : _name = name;
 
-  factory StationInfo.fromMap(Map<String, dynamic> map) {
+  factory StationInfo.fromMap(Map<String, dynamic> map, int hashCode) {
     var tempDataMap = map['data'];
     var tempData;
-    if(tempDataMap != null)
-      tempData = AqiInfo.fromListOfMaps(tempDataMap);
+    if (tempDataMap != null) tempData = AqiInfo.fromListOfMaps(tempDataMap);
 
     return StationInfo.raw(
+      hashCode,
       id: map['StationId'],
-      stationName: map['StationName'],
+      name: map['StationName'],
       city: map['City'],
       state: map['State'],
       status: map['Status'],
@@ -43,18 +58,19 @@ class StationInfo {
   }
 
   Map<String, dynamic> toMap() => {
-    'StationId': id,
-    'StationName': stationName,
-    'City': city,
-    'State': state,
-    'lat': lat,
-    'lng': lng,
-  };
+        'StationId': id,
+        'StationName': _name,
+        'City': city,
+        'State': state,
+        'lat': lat,
+        'lng': lng,
+      };
 
   static List<StationInfo> fromListOfMaps(List<dynamic> maps) {
     List<StationInfo> res = [];
-    for (var stationInfoMap in maps) {
-      res.add(StationInfo.fromMap(stationInfoMap));
+    for (int i = 0; i < maps.length; i++) {
+      var stationInfoMap = maps[i];
+      res.add(StationInfo.fromMap(stationInfoMap, i));
     }
     return res;
   }

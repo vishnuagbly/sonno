@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sonno/main_profile.dart';
+import 'package:sonno/objects/objects.dart';
+import 'loading_screen.dart';
+import 'sign_up.dart';
 import 'aqi_info_page.dart';
 import 'package:sonno/dialogs/dialogs.dart';
 import 'package:sonno/network.dart';
 import '../constants.dart';
-import '../objects/device.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  List<Device> _devices = [];
+  List<StationInfo> _devices = [];
   Widget body;
 
   bool get _newData {
@@ -62,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Text(
-                        'ID: 000${_devices[i].id.toString()}',
+                        'ID: ${_devices[i].id.toString()}',
                         style: TextStyle(
                           fontSize: screenWidth * 0.03,
                           color: kPrimaryTextColor.withOpacity(0.5),
@@ -72,8 +75,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 onTap: () {
-                  if (_devices[i].name == null)
-                    _devices[i].name = 'Device ${_devices[i].id}';
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -166,7 +167,7 @@ class _HomePageState extends State<HomePage> {
         List<Widget> deviceTiles = [];
         Network.searchDevices();
         Future.delayed(Duration(seconds: 4, milliseconds: 500)).then((value) => _loading = false);
-        return StreamBuilder<List<Device>>(
+        return StreamBuilder<List<StationInfo>>(
           stream: Network.availableDevicesSnapshot,
           builder: (context, snapshot) {
             if (snapshot.hasData && _loading) {
@@ -180,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Row(
                           children: [
-                            Text('${device.name ?? 'Device ${device.id}'}'),
+                            Text(device.name),
                           ],
                         ),
                       ),
@@ -257,4 +258,15 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+}
+
+Widget openHomePage() {
+  return LoadingScreen<String>(
+    future: MainProfile.name,
+    func: (name) {
+      if(name != null)
+        return HomePage();
+      return SignUpPage();
+    }
+  );
 }

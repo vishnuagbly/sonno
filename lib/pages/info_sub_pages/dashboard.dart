@@ -16,6 +16,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   Parameter _parameter = Parameter.aqi;
+  String _info = 'Concentration of AQI for last 24 hours';
   int _lastHours = 24;
 
   static const List<int> _lastHoursOpts = [
@@ -31,7 +32,7 @@ class _DashBoardState extends State<DashBoard> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(20),
-      height: screenWidth - 80,
+      height: screenWidth - 60,
       decoration: BoxDecoration(
         color: Colors.white12,
         borderRadius: BorderRadius.circular(screenWidth * 0.05),
@@ -47,6 +48,12 @@ class _DashBoardState extends State<DashBoard> {
                 onChanged: (value) {
                   setState(() {
                     _parameter = value;
+                    if (value == Parameter.aqi)
+                      _info =
+                          'Concentration of AQI for last ${_lastHours.toString()} hours';
+                    else
+                      _info =
+                          'Concentration of ${value.name.toUpperCase()} in \u03bcg/m\u00B3 for last ${_lastHours.toString()} hours';
                   });
                 },
                 items: List.generate(
@@ -97,6 +104,14 @@ class _DashBoardState extends State<DashBoard> {
               true,
               MediaQuery.of(context),
             ),
+          ),
+          SizedBox(height: screenWidth * 0.05),
+          Text(
+            _info,
+            style: TextStyle(
+              fontSize: screenWidth * 0.04,
+            ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

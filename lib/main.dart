@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
+import 'package:sonno/main_profile.dart';
+import 'package:sonno/pages/loading_screen.dart';
 import 'network.dart';
 import 'pages/pages.dart';
 
@@ -44,8 +46,15 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        kLoginPageRoute: (context) => LoginPage(),
-        kHomePageRoute: (context) => HomePage(),
+        kLoginPageRoute: (context) => LoadingScreen<bool>(
+          future: MainProfile.signedIn,
+          func: (isSignedIn) {
+            if(isSignedIn)
+              return openHomePage();
+            return LoginPage();
+          },
+        ),
+        kHomePageRoute: (context) => openHomePage(),
       },
     );
   }
