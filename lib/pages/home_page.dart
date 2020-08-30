@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sonno/main_profile.dart';
@@ -10,8 +12,12 @@ import 'package:sonno/network.dart';
 import '../constants.dart';
 
 class HomePage extends StatefulWidget {
+  HomePage({this.devices});
+
+  final List<StationInfo> devices;
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(devices);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -19,19 +25,16 @@ class _HomePageState extends State<HomePage> {
   List<StationInfo> _devices = [];
   Widget body;
 
+  _HomePageState(List<StationInfo> devices) : _devices = devices ?? [];
+
   bool get _newData {
     return Network.checkIfDataUpdated();
   }
 
   @override
   void initState() {
+    log('initiating state', name: initState.toString());
     super.initState();
-  }
-
-  @override
-  void dispose() {
-//    Network.close();
-    super.dispose();
   }
 
   @override
@@ -81,6 +84,20 @@ class _HomePageState extends State<HomePage> {
                         builder: (context) => InfoPage(_devices[i]),
                       ));
                 },
+                onLongPress: () async {
+                  showDialog(
+                    context: context,
+                    builder: (context) => BooleanDialog(
+                      'Remove Device',
+                      onPressedYes: () {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          removeDevice(i);
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                },
               ),
             );
           },
@@ -111,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                 if (_newData)
                   future = Network.uploadData();
                 else
-                  future = Network.syncData();
+                  future = Network.syncData(_devices);
                 showDialog(
                   context: context,
                   builder: (context) => FutureDialog<void>(
@@ -158,6 +175,27 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void removeDevice(int i) async {
+    await showDialog(
+      context: context,
+      builder: (context) => FutureDialog<void>(
+        future: MainProfile.removeConnectedDevice(_devices[i].id),
+        hasData: (_) => CommonAlertDialog(
+          'Removed Device',
+          onPressed: () {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {
+                _devices.removeLast();
+              });
+            });
+            Navigator.pop(context);
+          },
+        ),
+        loadingText: 'Removing...',
+      ),
+    );
+  }
+
   void showSearchDialog() {
     showDialog(
       context: context,
@@ -166,7 +204,8 @@ class _HomePageState extends State<HomePage> {
         bool _loading = true;
         List<Widget> deviceTiles = [];
         Network.searchDevices();
-        Future.delayed(Duration(seconds: 4, milliseconds: 500)).then((value) => _loading = false);
+        Future.delayed(Duration(seconds: 4, milliseconds: 500))
+            .then((value) => _loading = false);
         return StreamBuilder<List<StationInfo>>(
           stream: Network.availableDevicesSnapshot,
           builder: (context, snapshot) {
@@ -185,10 +224,23 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      onTap: () {
+                      onTap: () async {
                         setState(() {
-                          if (!_devices.contains(device)) _devices.add(device);
+                          if (!_devices.contains(device)) {
+                            _devices.add(device);
+                          }
                         });
+                        await showDialog(
+                          context: context,
+                          builder: (context) => FutureDialog(
+                            future: MainProfile.setDevices(_devices),
+                            hasData: (_) {
+                              return CommonAlertDialog(
+                                'Device Added',
+                              );
+                            },
+                          ),
+                        );
                         Navigator.pop(context);
                       },
                     ),
@@ -260,13 +312,24 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget openHomePage() {
-  return LoadingScreen<String>(
-    future: MainProfile.name,
-    func: (name) {
-      if(name != null)
-        return HomePage();
-      return SignUpPage();
-    }
+Widget loadHomePageData() {
+  log('loading home page', name: 'loadHomePageData');
+  return LoadingScreen<List<StationInfo>>(
+    future: MainProfile.getConnectedDevice(),
+    func: (connectedDevices) {
+      List<StationInfo> devices = [];
+      devices.addAll(connectedDevices);
+      return HomePage(devices: devices);
+    },
   );
+}
+
+Widget openHomePage() {
+  log('opening home page', name: 'openHomePage');
+  return LoadingScreen<String>(
+      future: MainProfile.name,
+      func: (name) {
+        if (name != null) return loadHomePageData();
+        return SignUpPage();
+      });
 }

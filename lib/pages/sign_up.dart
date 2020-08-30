@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
@@ -87,13 +89,14 @@ class SignUpPage extends StatelessWidget {
 }
 
 void submit(String name, BuildContext context) async {
+  log('submitting name', name: 'SignUpPage/submit');
   if (name == null) return;
   Navigator.pushReplacement(
     context,
     MaterialPageRoute(
       builder: (context) => LoadingScreen<void>(
         future: MainProfile.setName(name),
-        func: (_) => HomePage(),
+        func: (_) => loadHomePageData(),
       ),
     ),
   );

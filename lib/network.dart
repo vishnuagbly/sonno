@@ -24,8 +24,7 @@ class Network {
     log('running transaction to upload all data', name: uploadData.toString());
     await _firestore.runTransaction((txn) async {
       for (var station in stations) {
-        if(station.id == null)
-          throw 'station id is null';
+        if (station.id == null) throw 'station id is null';
         txn.set(_firestore.collection(kStationsCollectionName).doc(station.id),
             station.toMap());
       }
@@ -42,14 +41,24 @@ class Network {
     await batch.commit();
   }
 
-  static Future<void> syncData() async {
-    for (var device in _devices) {
-      var station = device;
+  static Future<void> syncData(List<StationInfo> devices) async {
+    for (var device in devices) {
       await _firestore
           .collection(kStationsCollectionName)
-          .doc(station.id)
-          .set(station.toMap());
+          .doc(device.id)
+          .set(device.toMap());
     }
+  }
+
+  static Future<List<String>> getStationsNames(List<String> ids) async {
+    List<String> res = [];
+    for (var id in ids) res.add(await getStationName(id));
+    return res;
+  }
+
+  static Future<String> getStationName(String id) async {
+    return (await _firestore.collection(kStationsCollectionName).doc(id).get())
+        .data()['StationName'];
   }
 
   static Future<bool> checkWifi() async {
@@ -58,7 +67,7 @@ class Network {
     return false;
   }
 
-  static void initApp() async {
+  static Future<void> initApp() async {
     await Firebase.initializeApp();
   }
 
@@ -74,7 +83,7 @@ class Network {
     devices[0].name = null;
 
     for (int i = 0; i < 3; i++) {
-      await Future.delayed(Duration(seconds: 2)).then((value) {
+      await Future.delayed(Duration(seconds: 1)).then((value) {
         if (!_devices.contains(devices[i])) {
           _devices.add(devices[i]);
           _devicesController.add(_devices);
