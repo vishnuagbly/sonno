@@ -66,7 +66,7 @@ class MainProfile {
 
   static Future<void> _deleteAllConnectedDevicesFromCache() async {
     final prefs = await SharedPreferences.getInstance();
-    int totalDevices = prefs.getInt('totalConnectedDevices');
+    int totalDevices = prefs.getInt('totalConnectedDevices') ?? 0;
     for(int i = 0; i < totalDevices; i++){
       prefs.remove('device[$i]_id');
       prefs.remove('device[$i]_name');

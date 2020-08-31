@@ -72,15 +72,17 @@ class Network {
   }
 
   static void searchDevices() async {
-    await checkWifi();
+    if(!(await checkWifi()))
+      return;
     clearDevices();
     List<StationInfo> devices = [
       stations.firstWhere((element) => element.id == 'MP001'),
       stations.firstWhere((element) => element.id == 'AS001'),
       stations.firstWhere((element) => element.id == 'DL008')
     ];
-
     devices[0].name = null;
+    devices[1].name = null;
+    devices[2].name = null;
 
     for (int i = 0; i < 3; i++) {
       await Future.delayed(Duration(seconds: 1)).then((value) {

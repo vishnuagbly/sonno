@@ -14,12 +14,12 @@ class StationInfo {
   String _name;
   List<AqiInfo> data;
 
-  String get name {
-    if (_name != null) return _name;
-    return 'Device $id';
-  }
+  set name(String name) => _name = name;
 
-  set name(String value) => _name = value;
+  String get name {
+    if(_name != null) return _name;
+    return 'Device $_hashCode';
+  }
 
   @override
   int get hashCode => _hashCode;
@@ -59,7 +59,7 @@ class StationInfo {
 
   Map<String, dynamic> toMap() => {
         'StationId': id,
-        'StationName': _name,
+        'StationName': name,
         'City': city,
         'State': state,
         'lat': lat,

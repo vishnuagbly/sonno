@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:particles_flutter/particles_flutter.dart';
 import 'package:sonno/components/custom_sliding_route.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/components/custom_bottom_nav_bar.dart';
@@ -12,67 +13,94 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     const EdgeInsets padding = const EdgeInsets.all(20);
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        body: Stack(
           children: [
-            SizedBox(height: 20),
-            Container(
-              padding: padding,
-              color: kPrimaryColor,
-              child: Column(
-                children: [
-                  FutureBuilder<String>(
-                    future: MainProfile.name,
-                    builder: (context, snapshot) => Text(
-                      snapshot.data,
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.08,
-                        fontWeight: FontWeight.bold,
+            CircularParticle(
+              key: UniqueKey(),
+              awayRadius: 80,
+              numberOfParticles: 100,
+              speedOfParticles: 1,
+              height: screenHeight,
+              width: screenWidth,
+              onTapAnimation: true,
+              particleColor: Colors.white.withAlpha(150),
+              awayAnimationDuration: Duration(milliseconds: 600),
+              maxParticleSize: 8,
+              isRandSize: true,
+              isRandomColor: true,
+              randColorList: [
+                Colors.white,
+              ],
+              awayAnimationCurve: Curves.easeInOutBack,
+              enableHover: true,
+              hoverColor: Colors.white,
+              hoverRadius: 90,
+              connectDots: false,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 20),
+                Container(
+                  padding: padding,
+                  color: kPrimaryColor,
+                  child: Column(
+                    children: [
+                      FutureBuilder<String>(
+                        future: MainProfile.name,
+                        builder: (context, snapshot) => Text(
+                          snapshot.data ?? '',
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.08,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 5),
+                      Text(
+                        MainProfile.email,
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.035,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5),
-                  Text(
-                    MainProfile.email,
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.035,
-                      color: Colors.grey,
-                    ),
+                ),
+                SizedBox(height: 50),
+                Container(
+                  color: kPrimaryColor,
+                  padding: padding,
+                  child: CustomListTile(
+                    iconData: Icons.settings,
+                    title: 'Settings',
+                    page: SettingsPage(),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(height: 50),
-            Container(
-              color: kPrimaryColor,
-              padding: padding,
-              child: CustomListTile(
-                iconData: Icons.settings,
-                title: 'Settings',
-                page: SettingsPage(),
-              ),
-            ),
-            SizedBox(height: 50),
-            Container(
-              color: kPrimaryColor,
-              padding: padding,
-              child: Column(
-                children: [
-                  CustomListTile(
-                    iconData: Icons.question_answer,
-                    title: 'FAQ',
-                    page: FaqPage(),
+                ),
+                SizedBox(height: 50),
+                Container(
+                  color: kPrimaryColor,
+                  padding: padding,
+                  child: Column(
+                    children: [
+                      CustomListTile(
+                        iconData: Icons.question_answer,
+                        title: 'FAQ',
+                        page: FaqPage(),
+                      ),
+                      CustomListTile(
+                        iconData: Icons.report_problem,
+                        title: 'Feedback',
+                        page: FeedbackPage(),
+                      ),
+                    ],
                   ),
-                  CustomListTile(
-                    iconData: Icons.report_problem,
-                    title: 'Feedback',
-                    page: FeedbackPage(),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
@@ -109,8 +137,6 @@ class CustomListTile extends StatelessWidget {
           createSlidingRoute(
             page,
             Offset(1.0, 0.0),
-            curve: Curves.easeIn,
-            duration: Duration(milliseconds: 100),
           ),
         );
       },

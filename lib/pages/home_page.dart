@@ -61,8 +61,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        (_devices[i].name ?? 'Device ${_devices[i].id}')
-                            .toUpperCase(),
+                        (_devices[i].name).toUpperCase(),
                         style: TextStyle(
                           fontSize: screenWidth * 0.04,
                         ),
@@ -133,6 +132,7 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   builder: (context) => FutureDialog<void>(
                     future: future,
+                    loadingText: 'Uploading to Cloud...',
                   ),
                 );
               },
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               setState(() {
-                _devices.removeLast();
+                _devices.removeAt(i);
               });
             });
             Navigator.pop(context);
@@ -182,110 +182,124 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) {
-        double screenWidth = MediaQuery.of(context).size.width;
         bool _loading = true;
         List<Widget> deviceTiles = [];
-        Network.searchDevices();
-        Future.delayed(Duration(seconds: 4, milliseconds: 500))
-            .then((value) => _loading = false);
-        return StreamBuilder<List<StationInfo>>(
-          stream: Network.availableDevicesSnapshot,
-          builder: (context, snapshot) {
-            if (snapshot.hasData && _loading) {
-              deviceTiles = [];
-              for (var device in snapshot.data) {
-                if (!_devices.contains(device))
-                  deviceTiles.add(
-                    InkWell(
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            double screenWidth = MediaQuery.of(context).size.width;
+            Network.searchDevices();
+            Future.delayed(Duration(seconds: 4, milliseconds: 500))
+                .then((value) => setDialogState(() => _loading = false));
+            return StreamBuilder<List<StationInfo>>(
+              stream: Network.availableDevicesSnapshot,
+              builder: (context, snapshot) {
+                if (snapshot.hasData && _loading) {
+                  deviceTiles = [];
+                  for (int i = 0; i < snapshot.data.length; i++) {
+                    var device = snapshot.data[i];
+                    if (!_devices.contains(device)) {
+                      deviceTiles.add(
+                        InkWell(
+                          child: Container(
+                            width: screenWidth * 0.5,
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
+                              children: [
+                                Text(device.name),
+                              ],
+                            ),
+                          ),
+                          onTap: () async {
+                            setState(() {
+                              if (!_devices.contains(device)) {
+                                _devices.add(device);
+                              }
+                            });
+                            await showDialog(
+                              context: context,
+                              builder: (context) => FutureDialog(
+                                future: MainProfile.setDevices(_devices),
+                                hasData: (_) {
+                                  return CommonAlertDialog(
+                                    'Device Added',
+                                  );
+                                },
+                              ),
+                            );
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
+                    }
+                  }
+                }
+                List<Widget> content = [];
+                if (!_loading && deviceTiles.length == 0)
+                  content.add(FutureBuilder<bool>(
+                    future: Network.checkWifi(),
+                    builder: (context, snapshot) {
+                      String text = 'NO DEVICE FOUND';
+                      if (snapshot.hasData) if (!snapshot.data)
+                        text = 'NO WIFI FOUND';
+                      return Text(text);
+                    },
+                  ));
+                for (var deviceTile in deviceTiles) {
+                  content.add(deviceTile);
+                  content.add(Divider());
+                }
+                if (_loading) {
+                  content.add(
+                    Flexible(
                       child: Container(
-                        width: screenWidth * 0.5,
-                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        constraints: BoxConstraints(
+                          minWidth: screenWidth * 0.5,
+                        ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(device.name),
+                            Text('Searching...'),
+                            SizedBox(
+                              width: 10,
+                              height: 10,
+                              child: FittedBox(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      onTap: () async {
-                        setState(() {
-                          if (!_devices.contains(device)) {
-                            _devices.add(device);
-                          }
-                        });
-                        await showDialog(
-                          context: context,
-                          builder: (context) => FutureDialog(
-                            future: MainProfile.setDevices(_devices),
-                            hasData: (_) {
-                              return CommonAlertDialog(
-                                'Device Added',
-                              );
-                            },
-                          ),
-                        );
-                        Navigator.pop(context);
-                      },
                     ),
                   );
-              }
-            }
-            List<Widget> content = [];
-            if (!_loading && deviceTiles.length == 0)
-              content.add(Text('NO DEVICE FOUND'));
-            for (var deviceTile in deviceTiles) {
-              content.add(deviceTile);
-              content.add(Divider());
-            }
-            if (_loading) {
-              content.add(
-                Flexible(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minWidth: screenWidth * 0.5,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Searching...'),
-                        SizedBox(
-                          width: 10,
-                          height: 10,
-                          child: FittedBox(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      ],
+                }
+                return AlertDialog(
+                  title: Text(
+                    'Devices',
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.04,
                     ),
                   ),
-                ),
-              );
-            }
-            return AlertDialog(
-              title: Text(
-                'Devices',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.04,
-                ),
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: content,
-              ),
-              actions: [
-                FlatButton(
-                  child: Text('Search'),
-                  onPressed: () {
-                    _loading = true;
-                    Network.searchDevices();
-                    Future.delayed(Duration(seconds: 5))
-                        .then((value) => _loading = false);
-                  },
-                ),
-                FlatButton(
-                  child: Text("Cancel"),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: content,
+                  ),
+                  actions: [
+                    FlatButton(
+                      child: Text('Search'),
+                      onPressed: () {
+                        _loading = true;
+                        Network.searchDevices();
+                        Future.delayed(Duration(seconds: 5))
+                            .then((value) => _loading = false);
+                      },
+                    ),
+                    FlatButton(
+                      child: Text("Cancel"),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                );
+              },
             );
           },
         );

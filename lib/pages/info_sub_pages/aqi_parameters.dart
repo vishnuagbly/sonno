@@ -101,6 +101,10 @@ class _AqiParametersState extends State<AqiParameters> {
                     .getMax(
                   exclude: [widget.stationInfo.getAvg(Parameter.aqi)],
                 ).toInt();
+                String text = ' \u03bcg/m\u00B3';
+                if (_parameter == Parameter.aqi)
+                  text = '';
+                else if (_parameter == Parameter.co) text = ' mg/m\u00B3';
                 max += max ~/ 10;
                 return Column(
                   children: [
@@ -120,11 +124,9 @@ class _AqiParametersState extends State<AqiParameters> {
                                       fontSize: screenWidth * 0.06,
                                     ),
                                   ),
-                                  Text(
-                                    _parameter == Parameter.aqi
-                                        ? ''
-                                        : ' \u03bcg/m\u00B3',
-                                  ),
+                                  Text(text, style: TextStyle(
+                                    fontSize: screenWidth * 0.035,
+                                  ),),
                                 ],
                               ),
                               SizedBox(height: screenWidth * 0.01),

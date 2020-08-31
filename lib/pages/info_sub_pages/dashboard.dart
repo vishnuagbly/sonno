@@ -16,7 +16,7 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   Parameter _parameter = Parameter.aqi;
-  String _info = 'Concentration of AQI for last 24 hours';
+  String _info = 'Index of AQI for last 24 hours';
   int _lastHours = 24;
 
   static const List<int> _lastHoursOpts = [
@@ -50,7 +50,9 @@ class _DashBoardState extends State<DashBoard> {
                     _parameter = value;
                     if (value == Parameter.aqi)
                       _info =
-                          'Concentration of AQI for last ${_lastHours.toString()} hours';
+                          'Index of AQI for last ${_lastHours.toString()} hours';
+                    else if(value == Parameter.co)
+                      _info = 'Concentration of CO in mg/m\u00B3 for last ${_lastHours.toString()} hours';
                     else
                       _info =
                           'Concentration of ${value.name.toUpperCase()} in \u03bcg/m\u00B3 for last ${_lastHours.toString()} hours';

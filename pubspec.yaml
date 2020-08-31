@@ -33,6 +33,7 @@ dependencies:
   flutter_phoenix: ^0.1.0
   google_sign_in: ^4.5.3
   shared_preferences: ^0.5.10
+  particles_flutter: ^0.1.2
 
 
   # The following adds the Cupertino Icons font to your application.

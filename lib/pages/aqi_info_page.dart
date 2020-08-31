@@ -33,18 +33,19 @@ class _InfoPageState extends State<InfoPage>
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         body: NestedScrollView(
           controller: _scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverOverlapAbsorber(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                    context),
                 sliver: SliverAppBar(
                   automaticallyImplyLeading: false,
                   pinned: true,
                   floating: false,
-                  backgroundColor: kPrimaryBgColor,
+                  backgroundColor: Colors.transparent,
                   expandedHeight: screenHeight * 0.5,
                   collapsedHeight: screenHeight * 0.5,
                   forceElevated: innerBoxIsScrolled,
@@ -78,7 +79,9 @@ class _InfoPageState extends State<InfoPage>
                                     ),
                                   ),
                                   Text(
-                                    widget.stationInfo.data.last.aqi.toInt().toString(),
+                                    widget.stationInfo.data.last.aqi
+                                        .toInt()
+                                        .toString(),
                                     style: TextStyle(
                                       fontSize: screenHeight * 0.125,
                                       fontWeight: FontWeight.w100,
@@ -170,8 +173,9 @@ class _InfoPageState extends State<InfoPage>
                 builder: (context) => CustomScrollView(
                   slivers: [
                     SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                          context),
+                      handle:
+                          NestedScrollView.sliverOverlapAbsorberHandleFor(
+                              context),
                     ),
                     SliverToBoxAdapter(
                       child: HealthAdvice(widget.stationInfo),
@@ -183,10 +187,12 @@ class _InfoPageState extends State<InfoPage>
                 builder: (context) => CustomScrollView(
                   slivers: [
                     SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                          context),
+                      handle:
+                          NestedScrollView.sliverOverlapAbsorberHandleFor(
+                              context),
                     ),
-                    SliverToBoxAdapter(child: AqiParameters(widget.stationInfo)),
+                    SliverToBoxAdapter(
+                        child: AqiParameters(widget.stationInfo)),
                   ],
                 ),
               ),
@@ -194,10 +200,12 @@ class _InfoPageState extends State<InfoPage>
                 builder: (context) => CustomScrollView(
                   slivers: [
                     SliverOverlapInjector(
-                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                          context),
+                      handle:
+                          NestedScrollView.sliverOverlapAbsorberHandleFor(
+                              context),
                     ),
-                    SliverToBoxAdapter(child: DashBoard(widget.stationInfo)),
+                    SliverToBoxAdapter(
+                        child: DashBoard(widget.stationInfo)),
                   ],
                 ),
               ),
