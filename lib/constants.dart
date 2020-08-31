@@ -4,6 +4,7 @@ import 'objects/color_indicator.dart';
 
 const kHomePageRoute = '/home_page';
 const kInfoPageRoute = '/info_page';
+const kProfilePageRoute = '/profile_page';
 const kLoginPageRoute = '/';
 
 const kStationsCollectionName = 'stations';

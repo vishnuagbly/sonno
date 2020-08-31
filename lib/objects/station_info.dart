@@ -1,4 +1,4 @@
-import 'package:sonno/bar_chart.dart';
+import 'package:sonno/components/bar_chart.dart';
 import 'package:sonno/objects/aqi_info.dart';
 
 import 'parameter.dart';

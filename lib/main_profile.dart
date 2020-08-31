@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sonno/objects/objects.dart';
 
@@ -8,8 +9,7 @@ class MainProfile {
   static String _authId;
   static List<StationInfo> _connectedDevices;
 
-  static setProfile(
-      String name, String uuid, List<StationInfo> connectedDevices) {}
+  static String get email => FirebaseAuth.instance.currentUser.email;
 
   static Future<String> get name async {
     if (_name == null) {

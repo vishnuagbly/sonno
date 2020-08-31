@@ -3,7 +3,7 @@ import 'package:sonno/constants.dart';
 import 'package:sonno/pages/info_sub_pages/info_sub_pages.dart';
 import '../objects/objects.dart';
 
-import '../color_guide.dart';
+import '../components/color_guide.dart';
 import '../objects/parameter.dart';
 
 class InfoPage extends StatefulWidget {

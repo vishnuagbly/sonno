@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sonno/components/custom_bottom_nav_bar.dart';
 import 'package:sonno/main_profile.dart';
 import 'package:sonno/objects/objects.dart';
 import 'loading_screen.dart';
@@ -21,7 +22,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
   List<StationInfo> _devices = [];
   Widget body;
 
@@ -153,25 +153,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: body,
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            title: Text('Me'),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
+      bottomNavigationBar: CustomBottomNavigationBar(),
     );
   }
 

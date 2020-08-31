@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
+import 'package:sonno/pages/profile_page.dart';
 import 'network.dart';
 import 'pages/pages.dart';
 
@@ -54,6 +55,10 @@ class MyApp extends StatelessWidget {
           log('home page route', name: kHomePageRoute);
           return openHomePage();
         },
+        kProfilePageRoute: (context) {
+          log('profile page route', name: kProfilePageRoute);
+          return ProfilePage();
+        }
       },
     );
   }

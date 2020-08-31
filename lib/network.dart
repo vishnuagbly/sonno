@@ -41,15 +41,6 @@ class Network {
     await batch.commit();
   }
 
-  static Future<void> syncData(List<StationInfo> devices) async {
-    for (var device in devices) {
-      await _firestore
-          .collection(kStationsCollectionName)
-          .doc(device.id)
-          .set(device.toMap());
-    }
-  }
-
   static Future<List<String>> getStationsNames(List<String> ids) async {
     List<String> res = [];
     for (var id in ids) res.add(await getStationName(id));
@@ -59,6 +50,15 @@ class Network {
   static Future<String> getStationName(String id) async {
     return (await _firestore.collection(kStationsCollectionName).doc(id).get())
         .data()['StationName'];
+  }
+
+  static Future<void> syncData(List<StationInfo> devices) async {
+    for (var device in devices) {
+      await _firestore
+          .collection(kStationsCollectionName)
+          .doc(device.id)
+          .set(device.toMap());
+    }
   }
 
   static Future<bool> checkWifi() async {

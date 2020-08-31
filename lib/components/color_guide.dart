@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 ///height = screenHeight * 0.1
 class ColorGuide extends StatelessWidget {
