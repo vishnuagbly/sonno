@@ -210,11 +210,13 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           onTap: () async {
+                            log('adding device', name: 'onTap/deviceTile');
                             setState(() {
                               if (!_devices.contains(device)) {
                                 _devices.add(device);
                               }
                             });
+                            log('showing dialog', name: 'onTap/deviceTile');
                             await showDialog(
                               context: context,
                               builder: (context) => FutureDialog(
@@ -226,6 +228,7 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                             );
+                            log('popping searchDialog', name: 'onTap/deviceTile');
                             Navigator.pop(context);
                           },
                         ),

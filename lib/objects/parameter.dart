@@ -1,6 +1,7 @@
+import 'package:flutter/services.dart';
 import 'package:sonno/constants.dart';
 
-import 'color_indicator.dart';
+import 'status.dart';
 
 class Parameter {
   const Parameter({String name, List<double> ranges})
@@ -25,29 +26,36 @@ class Parameter {
       };
 
   double min(Status status) {
-    for(int i = 0; i < statuses.length; i++){
-      if(status == statuses[i])
-        if(i >= _ranges.length) return _ranges.last;
+    for (int i = 0; i < statuses.length; i++) {
+      if (status == statuses[i]) {
+        if (i >= _ranges.length) return _ranges.last;
         return _ranges[i];
+      }
     }
-    throw 'status not in range';
+    throw PlatformException(
+      code: 'status not in range',
+      details: 'status\n  ${status.text} = ${status.hashString}',
+    );
   }
 
   double max(Status status) {
-    for(int i = 0; i < statuses.length; i++){
-      if(status == statuses[i])
-        if(i + 1 >= _ranges.length) return _ranges.last;
+    for (int i = 0; i < statuses.length; i++) {
+      if (status == statuses[i]) {
+        if (i + 1 >= _ranges.length) return _ranges.last;
         return _ranges[i + 1];
+      }
     }
     throw 'status not in range';
   }
 
   Status status(double value) {
-    for(var status in statuses){
-      if(value > min(status) && value < min(status))
-        return status;
+    for (var status in statuses) {
+      if (value >= min(status) && value < max(status)) return status;
     }
-    throw 'value not in range';
+    throw PlatformException(
+      code: 'value_not_in_range',
+      details: 'value: $value\n_ranges: ${_ranges.toString()}',
+    );
   }
 }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sonno/extensions/double_extensions.dart';
 import 'package:sonno/objects/parameter.dart';
 import 'package:sonno/objects/station_info.dart';
 
@@ -32,6 +31,7 @@ class _AqiParametersState extends State<AqiParameters> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(20),
@@ -94,10 +94,8 @@ class _AqiParametersState extends State<AqiParameters> {
               (index) {
                 double flex = getFlex(index);
                 int max = widget.stationInfo
-                    .allMaxParameters(lastHours: _lastHours)
-                    .getMax(
-                  exclude: [widget.stationInfo.getAvg(Parameters.aqi)],
-                ).toInt();
+                    .getMax(_parameter, lastHours: _lastHours)
+                    .toInt();
                 String text = ' \u03bcg/m\u00B3';
                 if (_parameter == Parameters.aqi)
                   text = '';
@@ -109,31 +107,39 @@ class _AqiParametersState extends State<AqiParameters> {
                       children: [
                         Container(
                           width: screenWidth * 0.2,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    flex.toInt().toString(),
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 0.06,
+                          constraints: BoxConstraints(
+                            maxHeight: screenHeight * 0.07,
+                          ),
+                          child: FittedBox(
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      flex.toInt().toString(),
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.06,
+                                      ),
                                     ),
-                                  ),
-                                  Text(text, style: TextStyle(
-                                    fontSize: screenWidth * 0.035,
-                                  ),),
-                                ],
-                              ),
-                              SizedBox(height: screenWidth * 0.01),
-                              Text(
-                                _type[index],
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.04,
+                                    Text(
+                                      text,
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.035,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: screenWidth * 0.01),
+                                Text(
+                                  _type[index],
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 0.04,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -177,11 +183,9 @@ class _AqiParametersState extends State<AqiParameters> {
 
   double getFlex(int index) {
     if (index == 0)
-      return widget.stationInfo
-          .getAvg(_parameter, lastHours: _lastHours);
+      return widget.stationInfo.getAvg(_parameter, lastHours: _lastHours);
     if (index == 1)
-      return widget.stationInfo
-          .getMax(_parameter, lastHours: _lastHours);
+      return widget.stationInfo.getMax(_parameter, lastHours: _lastHours);
     return widget.stationInfo.getMin(_parameter, lastHours: _lastHours);
   }
 }

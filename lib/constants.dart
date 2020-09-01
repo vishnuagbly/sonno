@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'objects/color_indicator.dart';
+import 'objects/status.dart';
 
 const kHomePageRoute = '/home_page';
 const kInfoPageRoute = '/info_page';
@@ -24,10 +24,10 @@ double alertDialogTitleTextSize(double screenWidth) => screenWidth * 0.06;
 double alertDialogButtonTextSize(double screenWidth) => screenWidth * 0.04;
 
 List<Status> statuses = [
-  Status(Colors.green, 'Good'),
-  Status(Colors.amber, 'Satisfactory'),
-  Status(Colors.deepOrange, 'Moderate'),
-  Status(Colors.pink, 'Poor'),
-  Status(Colors.deepPurple, 'Very Poor'),
-  Status(Colors.red, 'Severe'),
+  Status(Colors.lightBlueAccent, 'Good'),
+  Status(Colors.green, 'Satisfactory'),
+  Status(Colors.yellow, 'Moderate'),
+  Status(Colors.orange, 'Poor'),
+  Status(Colors.red, 'Very Poor'),
+  Status(Colors.red[900], 'Severe'),
 ];

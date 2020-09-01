@@ -23,10 +23,16 @@ class ColorGuide extends StatelessWidget {
             (index) {
               List<Widget> range = [];
               if (index == 0)
-                range.add(Text(Parameters.aqi.min(statuses[index]).toString()));
+                range.add(Text(
+                    Parameters.aqi.min(statuses[index]).toInt().toString()));
               range.add(Spacer());
-              String max = Parameters.aqi.max(statuses[index]).toString();
-              if (index == statuses.length - 1) max += '+';
+              String max;
+              if (index == statuses.length - 1)
+                max =
+                    Parameters.aqi.max(statuses[index - 1]).toInt().toString() +
+                        '+';
+              else
+                max = Parameters.aqi.max(statuses[index]).toInt().toString();
               range.add(Text(max));
               return Expanded(
                 child: Column(

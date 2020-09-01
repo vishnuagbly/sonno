@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sonno/constants.dart';
 
 import 'parameter.dart';
@@ -80,14 +79,5 @@ class AqiInfo {
     else if(parameter == Parameters.pm10) return pm10;
     else if(parameter == Parameters.o3) return o3;
     else return so2;
-  }
-
-  static Color getColorForValue(double value) {
-    if (value > 400) return Colors.red;
-    if (value > 300) return Colors.deepPurple;
-    if (value > 200) return Colors.pink;
-    if (value > 100) return Colors.orange;
-    if (value > 50) return Colors.yellow;
-    return Colors.green;
   }
 }
