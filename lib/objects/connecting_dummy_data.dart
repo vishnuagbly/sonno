@@ -2,11 +2,11 @@ import 'package:sonno/objects/dummy_data.dart';
 
 import 'station_info.dart';
 
-List<StationInfo> allStationDummyData = [];
+List<DeviceInfo> allStationDummyData = [];
 
-List<StationInfo> get stations {
+List<DeviceInfo> get stations {
   if (allStationDummyData.length < 50)
-    allStationDummyData = StationInfo.fromListOfMaps(dummyMap['Stations']);
+    allStationDummyData = DeviceInfo.fromListOfMaps(dummyMap['Stations']);
   return allStationDummyData;
 }
 

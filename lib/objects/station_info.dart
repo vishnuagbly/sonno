@@ -3,7 +3,7 @@ import 'package:sonno/objects/aqi_info.dart';
 
 import 'parameter.dart';
 
-class StationInfo {
+class DeviceInfo {
   final String id;
   final int _hashCode;
   final double lat;
@@ -25,9 +25,9 @@ class StationInfo {
   int get hashCode => _hashCode;
 
   @override
-  bool operator ==(Object other) => other is StationInfo && other.id == this.id;
+  bool operator ==(Object other) => other is DeviceInfo && other.id == this.id;
 
-  StationInfo.raw(
+  DeviceInfo.raw(
     this._hashCode, {
     this.id,
     this.lat,
@@ -39,12 +39,12 @@ class StationInfo {
     this.city,
   }) : _name = name;
 
-  factory StationInfo.fromMap(Map<String, dynamic> map, int hashCode) {
+  factory DeviceInfo.fromMap(Map<String, dynamic> map, int hashCode) {
     var tempDataMap = map['data'];
     var tempData;
     if (tempDataMap != null) tempData = AqiInfo.fromListOfMaps(tempDataMap);
 
-    return StationInfo.raw(
+    return DeviceInfo.raw(
       hashCode,
       id: map['StationId'],
       name: map['StationName'],
@@ -66,11 +66,11 @@ class StationInfo {
         'lng': lng,
       };
 
-  static List<StationInfo> fromListOfMaps(List<dynamic> maps) {
-    List<StationInfo> res = [];
+  static List<DeviceInfo> fromListOfMaps(List<dynamic> maps) {
+    List<DeviceInfo> res = [];
     for (int i = 0; i < maps.length; i++) {
       var stationInfoMap = maps[i];
-      res.add(StationInfo.fromMap(stationInfoMap, i));
+      res.add(DeviceInfo.fromMap(stationInfoMap, i));
     }
     return res;
   }

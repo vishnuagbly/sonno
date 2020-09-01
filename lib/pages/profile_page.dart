@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
@@ -5,15 +7,31 @@ import 'package:sonno/components/custom_sliding_route.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/components/custom_bottom_nav_bar.dart';
 import 'package:sonno/main_profile.dart';
+import 'package:sonno/objects/objects.dart';
 
 import 'profile_sub_pages/profile_sub_pages.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  static DeviceInfo _selectedDevice;
+  static final _nullDevice = DeviceInfo.raw(999);
+
   @override
   Widget build(BuildContext context) {
     const EdgeInsets padding = const EdgeInsets.all(20);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    int numberOfParticles = 0;
+    String selectedDeviceName = 'Select Device for Visuals';
+    if (_selectedDevice != _nullDevice && _selectedDevice != null) {
+      numberOfParticles = _selectedDevice.getAvg(Parameters.aqi).toInt();
+      selectedDeviceName = _selectedDevice.name;
+      log('numOfParticles: $numberOfParticles', name: 'ProfilePage');
+    }
 
     return SafeArea(
       child: Scaffold(
@@ -22,19 +40,16 @@ class ProfilePage extends StatelessWidget {
             CircularParticle(
               key: UniqueKey(),
               awayRadius: 80,
-              numberOfParticles: 100,
+              numberOfParticles: numberOfParticles.toDouble(),
               speedOfParticles: 1,
               height: screenHeight,
               width: screenWidth,
-              onTapAnimation: true,
+              onTapAnimation: false,
               particleColor: Colors.white.withAlpha(150),
               awayAnimationDuration: Duration(milliseconds: 600),
               maxParticleSize: 8,
               isRandSize: true,
-              isRandomColor: true,
-              randColorList: [
-                Colors.white,
-              ],
+              isRandomColor: false,
               awayAnimationCurve: Curves.easeInOutBack,
               enableHover: true,
               hoverColor: Colors.white,
@@ -69,6 +84,57 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                SizedBox(height: 50),
+                Container(
+                  color: kPrimaryColor,
+                  padding: padding,
+                  child: CustomListTile(
+                    iconData: Icons.blur_on,
+                    title: selectedDeviceName,
+                    trailing: FutureBuilder<List<DeviceInfo>>(
+                      future: MainProfile.getConnectedDevice(),
+                      builder: (context, snapshot) {
+                        Icon icon = Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.grey,
+                          size: screenWidth * 0.08,
+                        );
+                        if (snapshot.hasData)
+                          return PopupMenuButton<DeviceInfo>(
+                            onSelected: (value) => setState(() {
+                              log('selected a device',
+                                  name: 'popupMenu/ProfilePage');
+                              _selectedDevice = value;
+                            }),
+                            itemBuilder: (context) {
+                              var devices = snapshot.data;
+                              List<PopupMenuItem<DeviceInfo>> res = [];
+                              TextStyle style = TextStyle(
+                                fontSize: screenWidth * 0.05,
+                              );
+                              res.add(PopupMenuItem<DeviceInfo>(
+                                value: _nullDevice,
+                                child: Container(
+                                  child: Text('No Device', style: style),
+                                ),
+                              ));
+                              for (var device in devices) {
+                                res.add(PopupMenuItem<DeviceInfo>(
+                                  value: device,
+                                  child: Container(
+                                    child: Text('${device.name}', style: style),
+                                  ),
+                                ));
+                              }
+                              return res;
+                            },
+                            icon: icon,
+                          );
+                        return icon;
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 50),
@@ -111,13 +177,24 @@ class ProfilePage extends StatelessWidget {
 }
 
 class CustomListTile extends StatelessWidget {
-  CustomListTile({IconData iconData, this.page, String title})
-      : icon = Icon(iconData ?? Icons.label),
+  ///if both page and onTap are provided than onTap is given priority.
+  CustomListTile({
+    IconData iconData,
+    this.page,
+    String title,
+    this.trailing = const Icon(
+      Icons.arrow_forward_ios,
+      color: Colors.grey,
+    ),
+    this.onTap,
+  })  : icon = Icon(iconData ?? Icons.label),
         title = title ?? "";
 
   final Icon icon;
+  final Widget trailing;
   final String title;
   final Widget page;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -130,16 +207,18 @@ class CustomListTile extends StatelessWidget {
           fontSize: screenWidth * 0.05,
         ),
       ),
-      trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey),
-      onTap: () {
-        Navigator.push(
-          context,
-          createSlidingRoute(
-            page,
-            Offset(1.0, 0.0),
-          ),
-        );
-      },
+      trailing: trailing,
+      onTap: onTap ??
+          () {
+            if (page != null)
+              Navigator.push(
+                context,
+                createSlidingRoute(
+                  page,
+                  Offset(1.0, 0.0),
+                ),
+              );
+          },
     );
   }
 }

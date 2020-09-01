@@ -10,14 +10,14 @@ import 'package:sonno/objects/objects.dart';
 
 class Network {
   static var _firestore = FirebaseFirestore.instance;
-  static List<StationInfo> _devices = [];
+  static List<DeviceInfo> _devices = [];
 
-  static StreamController<List<StationInfo>> _devicesController =
-      StreamController<List<StationInfo>>.broadcast();
+  static StreamController<List<DeviceInfo>> _devicesController =
+      StreamController<List<DeviceInfo>>.broadcast();
 
   static close() => _devicesController.close();
 
-  static Stream<List<StationInfo>> get availableDevicesSnapshot =>
+  static Stream<List<DeviceInfo>> get availableDevicesSnapshot =>
       _devicesController.stream;
 
   static Future<void> uploadData() async {
@@ -52,7 +52,7 @@ class Network {
         .data()['StationName'];
   }
 
-  static Future<void> syncData(List<StationInfo> devices) async {
+  static Future<void> syncData(List<DeviceInfo> devices) async {
     for (var device in devices) {
       await _firestore
           .collection(kStationsCollectionName)
@@ -75,7 +75,7 @@ class Network {
     if(!(await checkWifi()))
       return;
     clearDevices();
-    List<StationInfo> devices = [
+    List<DeviceInfo> devices = [
       stations.firstWhere((element) => element.id == 'MP001'),
       stations.firstWhere((element) => element.id == 'AS001'),
       stations.firstWhere((element) => element.id == 'DL008')

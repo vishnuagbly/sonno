@@ -15,17 +15,17 @@ import '../constants.dart';
 class HomePage extends StatefulWidget {
   HomePage({this.devices});
 
-  final List<StationInfo> devices;
+  final List<DeviceInfo> devices;
 
   @override
   _HomePageState createState() => _HomePageState(devices);
 }
 
 class _HomePageState extends State<HomePage> {
-  List<StationInfo> _devices = [];
+  List<DeviceInfo> _devices = [];
   Widget body;
 
-  _HomePageState(List<StationInfo> devices) : _devices = devices ?? [];
+  _HomePageState(List<DeviceInfo> devices) : _devices = devices ?? [];
 
   bool get _newData {
     return Network.checkIfDataUpdated();
@@ -183,14 +183,17 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (context) {
         bool _loading = true;
+        bool dialogOpened = true;
         List<Widget> deviceTiles = [];
         return StatefulBuilder(
           builder: (context, setDialogState) {
             double screenWidth = MediaQuery.of(context).size.width;
             Network.searchDevices();
             Future.delayed(Duration(seconds: 4, milliseconds: 500))
-                .then((value) => setDialogState(() => _loading = false));
-            return StreamBuilder<List<StationInfo>>(
+                .then((value) {
+              if (dialogOpened) setDialogState(() => _loading = false);
+            });
+            return StreamBuilder<List<DeviceInfo>>(
               stream: Network.availableDevicesSnapshot,
               builder: (context, snapshot) {
                 if (snapshot.hasData && _loading) {
@@ -228,7 +231,9 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                             );
-                            log('popping searchDialog', name: 'onTap/deviceTile');
+                            log('popping searchDialog',
+                                name: 'onTap/deviceTile');
+                            dialogOpened = false;
                             Navigator.pop(context);
                           },
                         ),
@@ -313,10 +318,10 @@ class _HomePageState extends State<HomePage> {
 
 Widget loadHomePageData() {
   log('loading home page', name: 'loadHomePageData');
-  return LoadingScreen<List<StationInfo>>(
+  return LoadingScreen<List<DeviceInfo>>(
     future: MainProfile.getConnectedDevice(),
     func: (connectedDevices) {
-      List<StationInfo> devices = [];
+      List<DeviceInfo> devices = [];
       devices.addAll(connectedDevices);
       return HomePage(devices: devices);
     },

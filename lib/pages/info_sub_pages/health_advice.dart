@@ -4,7 +4,7 @@ import 'package:sonno/objects/station_info.dart';
 class HealthAdvice extends StatelessWidget {
   HealthAdvice(this.stationInfo);
 
-  final StationInfo stationInfo;
+  final DeviceInfo stationInfo;
 
   @override
   Widget build(BuildContext context) {

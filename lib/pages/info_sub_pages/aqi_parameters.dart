@@ -5,7 +5,7 @@ import 'package:sonno/objects/station_info.dart';
 class AqiParameters extends StatefulWidget {
   AqiParameters(this.stationInfo);
 
-  final StationInfo stationInfo;
+  final DeviceInfo stationInfo;
 
   @override
   _AqiParametersState createState() => _AqiParametersState();

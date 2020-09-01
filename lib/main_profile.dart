@@ -7,7 +7,7 @@ import 'package:sonno/objects/objects.dart';
 class MainProfile {
   static String _name;
   static String _authId;
-  static List<StationInfo> _connectedDevices;
+  static List<DeviceInfo> _connectedDevices;
 
   static String get email => FirebaseAuth.instance.currentUser.email;
 
@@ -19,7 +19,7 @@ class MainProfile {
     return _name;
   }
 
-  static Future<List<StationInfo>> getConnectedDevice() async {
+  static Future<List<DeviceInfo>> getConnectedDevice() async {
     String logName = 'connectedDevice';
     log('getting connected Devices', name: logName);
     if (_connectedDevices == null || _connectedDevices.length == 0) {
@@ -46,7 +46,7 @@ class MainProfile {
     await prefs.setString('name', _name);
   }
 
-  static setDevices(List<StationInfo> connectedDevices) async {
+  static setDevices(List<DeviceInfo> connectedDevices) async {
     await _deleteAllConnectedDevicesFromCache();
     _connectedDevices = [];
     _connectedDevices.addAll(connectedDevices);

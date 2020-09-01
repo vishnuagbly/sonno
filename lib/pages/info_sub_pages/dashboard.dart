@@ -6,7 +6,7 @@ import 'package:sonno/objects/station_info.dart';
 class DashBoard extends StatefulWidget {
   DashBoard(this.stationInfo);
 
-  final StationInfo stationInfo;
+  final DeviceInfo stationInfo;
 
   @override
   _DashBoardState createState() => _DashBoardState();

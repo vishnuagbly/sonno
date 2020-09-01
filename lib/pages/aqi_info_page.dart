@@ -9,7 +9,7 @@ import '../objects/parameter.dart';
 class InfoPage extends StatefulWidget {
   InfoPage(this.stationInfo);
 
-  final StationInfo stationInfo;
+  final DeviceInfo stationInfo;
 
   @override
   _InfoPageState createState() => _InfoPageState();
