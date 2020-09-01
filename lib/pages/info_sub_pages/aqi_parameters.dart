@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/extensions/double_extensions.dart';
 import 'package:sonno/objects/parameter.dart';
-import 'package:sonno/objects/aqi_info.dart';
 import 'package:sonno/objects/station_info.dart';
-
-import '../../constants.dart';
 
 class AqiParameters extends StatefulWidget {
   AqiParameters(this.stationInfo);
@@ -16,7 +13,7 @@ class AqiParameters extends StatefulWidget {
 }
 
 class _AqiParametersState extends State<AqiParameters> {
-  Parameter _parameter = Parameter.aqi;
+  Parameter _parameter = Parameters.aqi;
   int _lastHours = 24;
 
   static const List<int> _lastHoursOpts = [
@@ -56,11 +53,11 @@ class _AqiParametersState extends State<AqiParameters> {
                   });
                 },
                 items: List.generate(
-                  parameters.length,
+                  Parameters.values.length,
                   (index) => DropdownMenuItem(
-                    value: Parameter.values.elementAt(index),
+                    value: Parameters.values.elementAt(index),
                     child: Text(
-                      parameters[index],
+                      Parameters.values[index].name,
                       style: TextStyle(
                         fontSize: screenWidth * 0.05,
                       ),
@@ -95,16 +92,16 @@ class _AqiParametersState extends State<AqiParameters> {
             children: List.generate(
               3,
               (index) {
-                int flex = getFlex(index);
+                double flex = getFlex(index);
                 int max = widget.stationInfo
                     .allMaxParameters(lastHours: _lastHours)
                     .getMax(
-                  exclude: [widget.stationInfo.getAvg(Parameter.aqi)],
+                  exclude: [widget.stationInfo.getAvg(Parameters.aqi)],
                 ).toInt();
                 String text = ' \u03bcg/m\u00B3';
-                if (_parameter == Parameter.aqi)
+                if (_parameter == Parameters.aqi)
                   text = '';
-                else if (_parameter == Parameter.co) text = ' mg/m\u00B3';
+                else if (_parameter == Parameters.co) text = ' mg/m\u00B3';
                 max += max ~/ 10;
                 return Column(
                   children: [
@@ -119,7 +116,7 @@ class _AqiParametersState extends State<AqiParameters> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    flex.toString(),
+                                    flex.toInt().toString(),
                                     style: TextStyle(
                                       fontSize: screenWidth * 0.06,
                                     ),
@@ -150,14 +147,13 @@ class _AqiParametersState extends State<AqiParameters> {
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: flex,
+                                  flex: flex.toInt(),
                                   child: Container(
-                                    color: AqiInfo.getColorForValue(
-                                        flex.toDouble()),
+                                    color: _parameter.status(flex).color,
                                   ),
                                 ),
                                 Expanded(
-                                  flex: max - flex,
+                                  flex: max - flex.toInt(),
                                   child: Container(
                                     color: Colors.white12,
                                   ),
@@ -179,15 +175,13 @@ class _AqiParametersState extends State<AqiParameters> {
     );
   }
 
-  int getFlex(int index) {
+  double getFlex(int index) {
     if (index == 0)
       return widget.stationInfo
-          .getAvg(_parameter, lastHours: _lastHours)
-          .toInt();
+          .getAvg(_parameter, lastHours: _lastHours);
     if (index == 1)
       return widget.stationInfo
-          .getMax(_parameter, lastHours: _lastHours)
-          .toInt();
-    return widget.stationInfo.getMin(_parameter, lastHours: _lastHours).toInt();
+          .getMax(_parameter, lastHours: _lastHours);
+    return widget.stationInfo.getMin(_parameter, lastHours: _lastHours);
   }
 }

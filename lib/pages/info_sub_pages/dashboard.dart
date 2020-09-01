@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/components/bar_chart.dart';
-import 'package:sonno/constants.dart';
 import 'package:sonno/objects/parameter.dart';
-import 'package:sonno/objects/aqi_info.dart';
 import 'package:sonno/objects/station_info.dart';
 
 class DashBoard extends StatefulWidget {
@@ -15,7 +13,7 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  Parameter _parameter = Parameter.aqi;
+  Parameter _parameter = Parameters.aqi;
   String _info = 'Index of AQI for last 24 hours';
   int _lastHours = 24;
 
@@ -48,22 +46,23 @@ class _DashBoardState extends State<DashBoard> {
                 onChanged: (value) {
                   setState(() {
                     _parameter = value;
-                    if (value == Parameter.aqi)
+                    if (value == Parameters.aqi)
                       _info =
                           'Index of AQI for last ${_lastHours.toString()} hours';
-                    else if(value == Parameter.co)
-                      _info = 'Concentration of CO in mg/m\u00B3 for last ${_lastHours.toString()} hours';
+                    else if (value == Parameters.co)
+                      _info =
+                          'Concentration of CO in mg/m\u00B3 for last ${_lastHours.toString()} hours';
                     else
                       _info =
                           'Concentration of ${value.name.toUpperCase()} in \u03bcg/m\u00B3 for last ${_lastHours.toString()} hours';
                   });
                 },
                 items: List.generate(
-                  parameters.length,
+                  Parameters.values.length,
                   (index) => DropdownMenuItem(
-                    value: Parameter.values.elementAt(index),
+                    value: Parameters.values.elementAt(index),
                     child: Text(
-                      parameters[index],
+                      Parameters.values[index].name,
                       style: TextStyle(
                         fontSize: screenWidth * 0.05,
                       ),
@@ -99,9 +98,10 @@ class _DashBoardState extends State<DashBoard> {
             child: BarChart(
               barChartDataGenerator(
                 widget.stationInfo.getAllBarChartData(_parameter, _lastHours),
-                color: AqiInfo.getColorForValue(
-                  widget.stationInfo.getAvg(_parameter),
-                ),
+                color: _parameter
+                    .status(widget.stationInfo
+                        .getAvg(_parameter, lastHours: _lastHours))
+                    .color,
               ),
               true,
               MediaQuery.of(context),

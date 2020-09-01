@@ -63,27 +63,23 @@ class AqiInfo {
   }
 
   static String getStatusFromAqi(double aqi) {
-    if (aqi > 400) return colorIndicators[5].status;
-    if (aqi > 300) return colorIndicators[4].status;
-    if (aqi > 200) return colorIndicators[3].status;
-    if (aqi > 100) return colorIndicators[2].status;
-    if (aqi > 50) return colorIndicators[1].status;
-    return colorIndicators[0].status;
+    if (aqi > 400) return statuses[5].text;
+    if (aqi > 300) return statuses[4].text;
+    if (aqi > 200) return statuses[3].text;
+    if (aqi > 100) return statuses[2].text;
+    if (aqi > 50) return statuses[1].text;
+    return statuses[0].text;
   }
 
-  double getValueFromParameter(Parameter parameter) =>
-      getValueFromParameterIndex(parameter.index);
-
-  double getValueFromParameterIndex(int index) {
-    if (index < 0 || index >= parameters.length) return 0;
-    if (index == 0) return pm25;
-    if (index == 1) return pm10;
-    if (index == 2) return no2;
-    if (index == 3) return nh3;
-    if (index == 4) return co;
-    if (index == 5) return so2;
-    if (index == 6) return o3;
-    return aqi;
+  double getValueFromParameter(Parameter parameter) {
+    if(parameter == Parameters.aqi) return aqi;
+    else if(parameter == Parameters.co) return co;
+    else if(parameter == Parameters.pm25) return pm25;
+    else if(parameter == Parameters.nh3) return nh3;
+    else if(parameter == Parameters.no2) return no2;
+    else if(parameter == Parameters.pm10) return pm10;
+    else if(parameter == Parameters.o3) return o3;
+    else return so2;
   }
 
   static Color getColorForValue(double value) {

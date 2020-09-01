@@ -77,7 +77,7 @@ class StationInfo {
 
   List<double> get allAvgParameters {
     List<double> res = [];
-    Parameter.values.forEach((element) {
+    Parameters.values.forEach((element) {
       res.add(getAvg(element));
     });
     return res;
@@ -85,7 +85,7 @@ class StationInfo {
 
   List<double> allMaxParameters({int lastHours = 24}) {
     List<double> res = [];
-    Parameter.values.forEach((element) {
+    Parameters.values.forEach((element) {
       res.add(getMax(element, lastHours: lastHours));
     });
     return res;

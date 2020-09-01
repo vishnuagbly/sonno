@@ -91,7 +91,7 @@ class _InfoPageState extends State<InfoPage>
                                   Text(
                                     AqiInfo.getStatusFromAqi(widget
                                         .stationInfo
-                                        .getAvg(Parameter.aqi)),
+                                        .getAvg(Parameters.aqi)),
                                     style: TextStyle(
                                       fontSize: screenHeight * 0.025,
                                       height: 1,

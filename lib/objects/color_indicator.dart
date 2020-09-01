@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ColorIndicator {
+class Status {
   final Color color;
-  final String status;
-  final int min, max;
+  final String text;
 
-  ColorIndicator(this.color, this.status, this.min, this.max);
+  @override
+  int get hashCode => '${color.value.toString()}$text'.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      other is Status && other.hashCode == text.hashCode;
+
+  Status(this.color, this.text);
 }
