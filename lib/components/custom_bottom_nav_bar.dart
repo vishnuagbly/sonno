@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/components/custom_sliding_route.dart';
-import 'package:sonno/pages/home_page.dart';
-
-import '../pages/profile_page.dart';
+import 'package:sonno/pages/pages.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   @override
@@ -23,22 +21,29 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           title: Text('Home'),
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.blur_on),
+          title: Text('Visuals'),
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.account_circle),
           title: Text('Me'),
         ),
       ],
       currentIndex: _selectedIndex,
       onTap: (index) {
+        if (_selectedIndex == index) return;
+        int dx = index - _selectedIndex;
         setState(() {
           _selectedIndex = index;
         });
         Widget page = loadHomePageData();
-        if (index == 1) page = ProfilePage();
+        if(index == 1) page = VisualsPage();
+        else if (index == 2) page = ProfilePage();
         Navigator.pushReplacement(
           context,
           createSlidingRoute(
             page,
-            Offset(-1 + (2 * index.toDouble()), 0),
+            Offset(dx.toDouble(), 0),
           ),
         );
       },

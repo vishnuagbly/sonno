@@ -18,7 +18,7 @@ class DeviceInfo {
 
   String get name {
     if(_name != null) return _name;
-    return 'Device $_hashCode';
+    return 'Device $id';
   }
 
   @override

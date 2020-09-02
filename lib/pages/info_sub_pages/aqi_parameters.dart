@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/objects/parameter.dart';
-import 'package:sonno/objects/station_info.dart';
+import 'package:sonno/objects/device_info.dart';
 
 class AqiParameters extends StatefulWidget {
   AqiParameters(this.stationInfo);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sonno/objects/station_info.dart';
+import 'package:sonno/objects/device_info.dart';
 
 class HealthAdvice extends StatelessWidget {
   HealthAdvice(this.stationInfo);

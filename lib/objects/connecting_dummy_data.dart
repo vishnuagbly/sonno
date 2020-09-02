@@ -1,6 +1,6 @@
 import 'package:sonno/objects/dummy_data.dart';
 
-import 'station_info.dart';
+import 'device_info.dart';
 
 List<DeviceInfo> allStationDummyData = [];
 
