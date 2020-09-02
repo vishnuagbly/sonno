@@ -86,14 +86,44 @@ class _HomePageState extends State<HomePage> {
                 onLongPress: () async {
                   showDialog(
                     context: context,
-                    builder: (context) => BooleanDialog(
-                      'Remove Device',
-                      onPressedYes: () {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          removeDevice(i);
-                        });
-                        Navigator.pop(context);
-                      },
+                    builder: (context) => AlertDialog(
+                      title: Text(
+                        'What do you want',
+                        style: TextStyle(
+                          fontSize: alertDialogTitleTextSize(screenWidth),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      backgroundColor: Color(kAlertDialogBackgroundColorCode),
+                      elevation: kAlertDialogElevation,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(kAlertDialogBorderRadius),
+                      ),
+                      actions: [
+                        FlatButton(
+                          child: Text('Rename'),
+                          onPressed: () {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              showRenameDeviceDialog(i);
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('Delete'),
+                          onPressed: () {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              removeDevice(i);
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('Cancel'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
                     ),
                   );
                 },
@@ -155,6 +185,69 @@ class _HomePageState extends State<HomePage> {
       body: body,
       bottomNavigationBar: CustomBottomNavigationBar(),
     );
+  }
+
+  void showRenameDeviceDialog(int i) async {
+    double screenWidth = MediaQuery.of(context).size.width;
+    String deviceName = _devices[i].name;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Color(kAlertDialogBackgroundColorCode),
+        title: Text(
+          'Rename Device',
+          style: TextStyle(
+            fontSize: alertDialogTitleTextSize(screenWidth),
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kAlertDialogBorderRadius)),
+        elevation: kAlertDialogElevation,
+        content: TextField(
+          style: TextStyle(
+            fontSize: screenWidth * 0.05,
+          ),
+          decoration: InputDecoration(
+            fillColor: Color(0x10ffffff),
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(50),
+              borderSide: BorderSide.none,
+            ),
+            hintText: _devices[i].name,
+          ),
+          onChanged: (value) => deviceName = value,
+          onSubmitted: (value) => renameDevice(_devices[i].id, value, context),
+        ),
+        actions: [
+          FlatButton(
+            child: Text('Submit'),
+            onPressed: () => renameDevice(_devices[i].id, deviceName, context),
+          ),
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> renameDevice(
+      String id, String name, BuildContext context) async {
+    setStationName(id, name);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (context) => FutureDialog(
+          future: MainProfile.setDevices(_devices),
+          hasData: (_) => CommonAlertDialog(
+            'Renamed Successfully',
+          ),
+        ),
+      );
+    });
+    Navigator.pop(context);
   }
 
   void removeDevice(int i) async {
