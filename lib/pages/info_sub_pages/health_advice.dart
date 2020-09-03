@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sonno/objects/device_info.dart';
+import 'package:sonno/objects/objects.dart';
 
 class HealthAdvice extends StatelessWidget {
   HealthAdvice(this.stationInfo);
@@ -9,9 +9,7 @@ class HealthAdvice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    bool ventilation = true;
-    if(stationInfo.data.last.aqi > 100)
-      ventilation = false;
+    Status aqiStatus = Parameters.aqi.status(stationInfo.data.last.aqi);
     return Container(
       height: screenHeight * 0.4,
       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -30,31 +28,15 @@ class HealthAdvice extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Advice(
-                      imageProvider: AssetImage('assets/air-filter.png'),
-                      name: 'Air Purifier',
-                      adviceText: 'Corona No need',
-                    ),
-                    Advice(
-                      imageProvider: AssetImage('assets/face-mask.png'),
-                      name: 'Pollution Mask',
-                      adviceText: 'Covid 19',
-                    ),
+                    Advices.airPurifier.build(aqiStatus),
+                    Advices.pollutionMask.build(aqiStatus),
                   ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Advice(
-                      imageProvider: AssetImage('assets/hiking.png'),
-                      name: 'Outdoor Activities',
-                      adviceText: 'Covid 19',
-                    ),
-                    Advice(
-                      imageProvider: AssetImage('assets/ventilation.png'),
-                      name: 'Ventilation',
-                      adviceText: ventilation ? 'Ichha Annusar': 'Not Recommended',
-                    ),
+                    Advices.outdoorActivities.build(aqiStatus),
+                    Advices.ventilation.build(aqiStatus),
                   ],
                 ),
               ],
@@ -63,48 +45,9 @@ class HealthAdvice extends StatelessWidget {
           SizedBox(
             height: screenHeight * 0.02,
           ),
-          Advice(
-            imageProvider: AssetImage('assets/family.png'),
-            name: 'Kids, Pregnant Woman & Senior Citizen',
-            adviceText: ventilation ? 'Do whatever they want' : 'Not Recommend outside',
-          ),
+          Advices.kids.build(aqiStatus),
         ],
       ),
-    );
-  }
-}
-
-class Advice extends StatelessWidget {
-  Advice({
-    @required this.imageProvider,
-    @required this.name,
-    @required this.adviceText,
-  });
-
-  final ImageProvider imageProvider;
-  final String name;
-  final String adviceText;
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Column(
-      children: [
-        Image(
-          image: imageProvider,
-          width: screenWidth * 0.1,
-        ),
-        SizedBox(height: screenWidth * 0.01),
-        Text(
-          name,
-          style: TextStyle(
-            fontSize: screenWidth * 0.04,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        Text(adviceText),
-      ],
     );
   }
 }

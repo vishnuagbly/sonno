@@ -33,7 +33,6 @@ class _InfoPageState extends State<InfoPage>
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         body: NestedScrollView(
           controller: _scrollController,
           headerSliverBuilder: (context, innerBoxIsScrolled) {

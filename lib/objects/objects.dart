@@ -6,3 +6,4 @@ export 'connecting_dummy_data.dart';
 export 'dummy_data.dart';
 export 'parameter.dart';
 export 'device_info.dart';
+export 'advice.dart';
