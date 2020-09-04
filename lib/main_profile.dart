@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sonno/components/custom_bottom_nav_bar.dart';
 import 'package:sonno/objects/objects.dart';
 
 class MainProfile {
@@ -40,7 +43,18 @@ class MainProfile {
     return _connectedDevices;
   }
 
+  static Future<void> logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    _authId = null;
+    _name = null;
+    _connectedDevices = [];
+    CustomBottomNavigationBar.reset();
+    Phoenix.rebirth(context);
+  }
+
   static Future<void> setName(String name) async {
+    if (name == null) return;
     final prefs = await SharedPreferences.getInstance();
     _name = name;
     await prefs.setString('name', _name);
@@ -55,8 +69,8 @@ class MainProfile {
 
   static Future<void> removeConnectedDevice(String id) async {
     await _deleteAllConnectedDevicesFromCache();
-    for(int i = 0; i < _connectedDevices.length; i++){
-      if(_connectedDevices[i].id == id){
+    for (int i = 0; i < _connectedDevices.length; i++) {
+      if (_connectedDevices[i].id == id) {
         _connectedDevices.removeAt(i);
         break;
       }
@@ -67,7 +81,7 @@ class MainProfile {
   static Future<void> _deleteAllConnectedDevicesFromCache() async {
     final prefs = await SharedPreferences.getInstance();
     int totalDevices = prefs.getInt('totalConnectedDevices') ?? 0;
-    for(int i = 0; i < totalDevices; i++){
+    for (int i = 0; i < totalDevices; i++) {
       prefs.remove('device[$i]_id');
       prefs.remove('device[$i]_name');
     }

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sonno/components/custom_sliding_route.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/components/custom_bottom_nav_bar.dart';
-import 'package:sonno/components/custom_list_tile.dart';
+import 'package:sonno/components/settings_list_tile.dart';
 import 'package:sonno/main_profile.dart';
 
 import 'profile_sub_pages/profile_sub_pages.dart';
@@ -13,7 +14,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
   Widget build(BuildContext context) {
     const EdgeInsets padding = const EdgeInsets.all(20);
@@ -57,10 +57,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 Container(
                   color: kPrimaryColor,
                   padding: padding,
-                  child: CustomListTile(
-                    iconData: Icons.settings,
+                  child: SettingsListTile(
+                    leadingIconData: Icons.settings,
                     title: 'Settings',
-                    page: SettingsPage(),
+                    onTap: () async {
+                      await Navigator.push(context,
+                          createSlidingRoute(SettingsPage(), Offset(1, 0)));
+                      setState(() {});
+                    },
                   ),
                 ),
                 SizedBox(height: 50),
@@ -69,13 +73,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: padding,
                   child: Column(
                     children: [
-                      CustomListTile(
-                        iconData: Icons.question_answer,
+                      SettingsListTile(
+                        leadingIconData: Icons.question_answer,
                         title: 'FAQ',
                         page: FaqPage(),
                       ),
-                      CustomListTile(
-                        iconData: Icons.report_problem,
+                      SettingsListTile(
+                        leadingIconData: Icons.report_problem,
                         title: 'Feedback',
                         page: FeedbackPage(),
                       ),

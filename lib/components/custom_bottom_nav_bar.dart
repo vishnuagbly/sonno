@@ -6,10 +6,16 @@ class CustomBottomNavigationBar extends StatefulWidget {
   @override
   _CustomBottomNavigationBarState createState() =>
       _CustomBottomNavigationBarState();
+
+  static void reset() => _CustomBottomNavigationBarState.reset();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   static int _selectedIndex = 0;
+
+  static void reset() {
+    _selectedIndex = 0;
+  }
 
   @override
   Widget build(BuildContext context) {

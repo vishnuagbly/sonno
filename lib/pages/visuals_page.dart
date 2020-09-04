@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
 import 'package:sonno/components/custom_bottom_nav_bar.dart';
-import 'package:sonno/components/custom_list_tile.dart';
+import 'package:sonno/components/settings_list_tile.dart';
 import 'package:sonno/main_profile.dart';
 import 'package:sonno/objects/objects.dart';
 
@@ -15,6 +15,18 @@ class VisualsPage extends StatefulWidget {
 class _VisualsPageState extends State<VisualsPage> {
   static DeviceInfo _selectedDevice;
   static final _nullDevice = DeviceInfo.raw(999);
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var devices = await MainProfile.getConnectedDevice();
+      if(_selectedDevice != null && !devices.contains(_selectedDevice))
+        setState(() {
+          _selectedDevice = _nullDevice;
+        });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +47,11 @@ class _VisualsPageState extends State<VisualsPage> {
             key: UniqueKey(),
             awayRadius: 80,
             numberOfParticles: numberOfParticles.toDouble(),
-            speedOfParticles: 1,
+            speedOfParticles: 2,
             height: screenHeight,
             width: screenWidth,
             onTapAnimation: false,
-            particleColor: Colors.white.withAlpha(150),
+            particleColor: Colors.brown[200].withAlpha(150),
             awayAnimationDuration: Duration(milliseconds: 600),
             maxParticleSize: 8,
             isRandSize: false,
@@ -54,8 +66,8 @@ class _VisualsPageState extends State<VisualsPage> {
             child: Container(
                 color: Colors.white12,
                 padding: const EdgeInsets.all(20),
-                child: CustomListTile(
-                  iconData: Icons.blur_on,
+                child: SettingsListTile(
+                  leadingIconData: Icons.blur_on,
                   title: selectedDeviceName,
                   trailing: FutureBuilder<List<DeviceInfo>>(
                     future: MainProfile.getConnectedDevice(),

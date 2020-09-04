@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/components/custom_sliding_route.dart';
 
-class CustomListTile extends StatelessWidget {
+class SettingsListTile extends StatelessWidget {
   ///if both page and onTap are provided than onTap is given priority.
-  CustomListTile({
-    IconData iconData,
+  SettingsListTile({
+    Key key,
+    IconData leadingIconData,
     this.page,
     String title,
     this.trailing = const Icon(
@@ -12,8 +13,9 @@ class CustomListTile extends StatelessWidget {
       color: Colors.grey,
     ),
     this.onTap,
-  })  : icon = Icon(iconData ?? Icons.label),
-        title = title ?? "";
+  })  : icon = Icon(leadingIconData ?? Icons.label),
+        title = title ?? "",
+        super(key: key);
 
   final Icon icon;
   final Widget trailing;
@@ -34,7 +36,7 @@ class CustomListTile extends StatelessWidget {
       ),
       trailing: trailing,
       onTap: onTap ??
-              () {
+          () {
             if (page != null)
               Navigator.push(
                 context,
