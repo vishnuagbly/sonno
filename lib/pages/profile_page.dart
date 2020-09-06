@@ -4,7 +4,10 @@ import 'package:sonno/components/custom_sliding_route.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/components/custom_bottom_nav_bar.dart';
 import 'package:sonno/components/settings_list_tile.dart';
+import 'package:sonno/dialogs/common_alert_dialog.dart';
+import 'package:sonno/dialogs/dialogs.dart';
 import 'package:sonno/main_profile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'profile_sub_pages/profile_sub_pages.dart';
 
@@ -81,7 +84,40 @@ class _ProfilePageState extends State<ProfilePage> {
                       SettingsListTile(
                         leadingIconData: Icons.report_problem,
                         title: 'Feedback',
-                        page: FeedbackPage(),
+                        onTap: () async {
+                          const url =
+                              "https://docs.google.com/forms/d/e/1FAIpQLSd5d2cAMrEEHjhN5WB6dA6P18daYmvKPycjK3Q2zHI7MPLeUw/viewform?usp=sf_link";
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => FutureDialog(
+                              future: canLaunch(url),
+                              hasData: (canLaunch) {
+                                if (canLaunch)
+                                  return FutureDialog(
+                                    future: launch(url),
+                                    hasData: (_) {
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback((_) {
+                                        Navigator.pop(context);
+                                      });
+                                      return CommonAlertDialog(
+                                        "Successfully launched url",
+                                      );
+                                    },
+                                    loadingText: 'Launching url...',
+                                  );
+                                return CommonAlertDialog(
+                                  'Cannot open url',
+                                  icon: Icon(
+                                    Icons.block,
+                                    color: Colors.red,
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),

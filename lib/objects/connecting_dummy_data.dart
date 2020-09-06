@@ -1,4 +1,4 @@
-import 'package:sonno/objects/dummy_data.dart';
+import '../data/dummy_data.dart';
 
 import 'device_info.dart';
 
