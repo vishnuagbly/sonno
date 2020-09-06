@@ -4,6 +4,7 @@ import 'package:sonno/components/settings_list_tile.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/dialogs/dialogs.dart';
 import 'package:sonno/main_profile.dart';
+import 'package:sonno/pages/about_page.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -110,6 +111,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   SettingsListTile(
                     leadingIconData: Icons.people,
                     title: 'About Us',
+                    page: AboutPage(),
                   ),
                   SettingsListTile(
                     leadingIconData: Icons.exit_to_app,
