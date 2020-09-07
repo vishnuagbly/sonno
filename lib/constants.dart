@@ -24,10 +24,10 @@ double alertDialogTitleTextSize(double screenWidth) => screenWidth * 0.06;
 double alertDialogButtonTextSize(double screenWidth) => screenWidth * 0.04;
 
 List<Status> statuses = [
-  Status(Colors.lightBlueAccent, 'Good'),
-  Status(Colors.green, 'Satisfactory'),
-  Status(Colors.yellow, 'Moderate'),
-  Status(Colors.orange, 'Poor'),
-  Status(Colors.red, 'Very Poor'),
-  Status(Colors.red[900], 'Severe'),
+  Status(Colors.lightBlueAccent, Color(0xff846401), 'Good'),
+  Status(Colors.green, Color(0xffd8a202),  'Satisfactory'),
+  Status(Colors.yellow, Color(0xfffff3e5),  'Moderate'),
+  Status(Colors.orange, Color(0xfffed597),  'Poor'),
+  Status(Colors.red, Color(0xff3d97fb),  'Very Poor'),
+  Status(Colors.red[900], Color(0xff004d83),  'Severe'),
 ];

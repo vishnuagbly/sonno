@@ -109,6 +109,24 @@ class _SettingsPageState extends State<SettingsPage> {
                     }),
                   ),
                   SettingsListTile(
+                    leadingIconData: Icons.remove_red_eye,
+                    title: 'Color Blind',
+                    trailing: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      child: Icon(
+                        MainProfile.colorBlind
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank,
+                        key: UniqueKey(),
+                        color: Colors.grey,
+                        size: 25,
+                      ),
+                    ),
+                    onTap: () => setState(() {
+                      MainProfile.colorBlind = !MainProfile.colorBlind;
+                    }),
+                  ),
+                  SettingsListTile(
                     leadingIconData: Icons.people,
                     title: 'About Us',
                     page: AboutPage(),

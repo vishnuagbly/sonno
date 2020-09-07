@@ -11,8 +11,26 @@ class MainProfile {
   static String _name;
   static String _authId;
   static List<DeviceInfo> _connectedDevices;
+  static bool _colorBlind;
 
   static String get email => FirebaseAuth.instance.currentUser.email;
+
+  static Future<void> getColorBlind() async {
+    final prefs = await SharedPreferences.getInstance();
+    _colorBlind = prefs.getBool('color_blind') ?? false;
+  }
+
+  static get colorBlind => _colorBlind;
+
+  static set colorBlind(bool value) {
+    _colorBlind = value;
+    saveColorBlind(value);
+  }
+
+  static saveColorBlind(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('color_blind', value);
+  }
 
   static Future<String> get name async {
     if (_name == null) {

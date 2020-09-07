@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sonno/components/custom_sliding_route.dart';
+import 'package:sonno/pages/heat_map.dart';
 import 'package:sonno/pages/pages.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -20,6 +21,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       elevation: 0,
       items: [
         BottomNavigationBarItem(
@@ -29,6 +31,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         BottomNavigationBarItem(
           icon: Icon(Icons.blur_on),
           title: Text('Visuals'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.my_location),
+          title: Text('Maps'),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle),
@@ -44,7 +50,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         });
         Widget page = loadHomePageData();
         if(index == 1) page = VisualsPage();
-        else if (index == 2) page = ProfilePage();
+        else if (index == 2) page = HeatMap();
+        else if(index == 3) page = ProfilePage();
         Navigator.pushReplacement(
           context,
           createSlidingRoute(

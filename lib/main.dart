@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:sonno/constants.dart';
+import 'package:sonno/main_profile.dart';
 import 'package:sonno/pages/profile_page.dart';
 import 'network.dart';
 import 'pages/pages.dart';
@@ -10,6 +11,7 @@ import 'pages/pages.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Network.initApp();
+  MainProfile.getColorBlind();
   runApp(Phoenix(child: MyApp()));
 }
 
