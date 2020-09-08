@@ -173,6 +173,13 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         actions: [
           IconButton(
+              icon: Icon(Icons.remove_red_eye),
+              color: kPrimaryTextColor,
+              iconSize: 35,
+              onPressed: () {
+                showColorBlindDialog();
+              }),
+          IconButton(
             icon: Icon(Icons.add_circle),
             color: kPrimarySelectionColor,
             iconSize: 35,
@@ -269,6 +276,50 @@ class _HomePageState extends State<HomePage> {
         loadingText: 'Removing...',
       ),
     );
+  }
+
+  void showColorBlindDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+            builder: (context, setDialogState) {
+              return AlertDialog(
+                title: Text('Are you color blind?'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(
+                      children: List.generate(
+                        3,
+                        (index) => RadioListTile<ColorBlindType>(
+                          value: ColorBlindTypes.all[index],
+                          groupValue: MainProfile.colorBlindType,
+                          onChanged: (type) {
+                            setDialogState(() {
+                              MainProfile.colorBlindType = type;
+                            });
+                          },
+                          title: Text('Yes I have ${ColorBlindTypes.all[index].text} Color Blindness.'),
+                        ),
+                      ),
+                    ),
+                    RadioListTile<ColorBlindType>(
+                      value: ColorBlindTypes.normal,
+                      groupValue: MainProfile.colorBlindType,
+                      onChanged: (type) {
+                        setDialogState(() {
+                          MainProfile.colorBlindType = type;
+                        });
+                      },
+                      title: Text('No, I have Normal Eyes.'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        });
   }
 
   void showSearchDialog() {

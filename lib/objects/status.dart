@@ -7,7 +7,7 @@ class Status {
   final String text;
 
   Color get color {
-    if(MainProfile.colorBlind)
+    if(MainProfile.colorBlindType.value)
       return _colorBlind;
     return _color;
   }

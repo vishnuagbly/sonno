@@ -8,3 +8,4 @@ export 'questions.dart';
 export 'parameter.dart';
 export 'device_info.dart';
 export 'advice.dart';
+export 'color_blind_type.dart';
