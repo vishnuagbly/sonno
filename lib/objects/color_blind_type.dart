@@ -12,7 +12,7 @@ class ColorBlindType {
 
   bool get value => _value;
 
-  Color get primarySelectionColor => _primarySelectionColor;
+  Color get iconColor => _primarySelectionColor;
   List<Color> get graphColors => _graphColors;
 
   String get text => _text;

@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<DeviceInfo> _devices = [];
+  Color _colorBlindColor = MainProfile.colorBlindType.iconColor;
   Widget body;
 
   _HomePageState(List<DeviceInfo> devices) : _devices = devices ?? [];
@@ -174,7 +175,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               icon: Icon(Icons.invert_colors),
-              color: kPrimaryTextColor,
+              color: _colorBlindColor,
               iconSize: 35,
               onPressed: () {
                 showColorBlindDialog();
@@ -285,13 +286,13 @@ class _HomePageState extends State<HomePage> {
           return StatefulBuilder(
             builder: (context, setDialogState) {
               return AlertDialog(
-                title: Text('Are you color blind?'),
+                title: Text('Color Blind Mode'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Column(
                       children: List.generate(
-                        ColorBlindTypes.all.length - 1,
+                        ColorBlindTypes.all.length,
                         (index) => RadioListTile<ColorBlindType>(
                           value: ColorBlindTypes.all[index],
                           groupValue: MainProfile.colorBlindType,
@@ -301,19 +302,9 @@ class _HomePageState extends State<HomePage> {
                             });
                           },
                           title: Text(
-                              'Yes I have ${ColorBlindTypes.all[index].text} Color Blindness.'),
+                              '${ColorBlindTypes.all[index].text}'),
                         ),
                       ),
-                    ),
-                    RadioListTile<ColorBlindType>(
-                      value: ColorBlindTypes.normal,
-                      groupValue: MainProfile.colorBlindType,
-                      onChanged: (type) {
-                        setDialogState(() {
-                          MainProfile.colorBlindType = type;
-                        });
-                      },
-                      title: Text('No, I have Normal Eyes.'),
                     ),
                   ],
                 ),
@@ -321,6 +312,9 @@ class _HomePageState extends State<HomePage> {
             },
           );
         });
+    setState(() {
+      _colorBlindColor = MainProfile.colorBlindType.iconColor;
+    });
   }
 
   void showSearchDialog() {

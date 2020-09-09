@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sonno/main_profile.dart';
-
 import 'objects/status.dart';
 
 const kHomePageRoute = '/home_page';
@@ -24,7 +22,6 @@ const kAlertDialogBorderRadius = 10.0;
 const kAlertDialogElevation = 30.0;
 
 double alertDialogTitleTextSize(double screenWidth) => screenWidth * 0.06;
-
 double alertDialogButtonTextSize(double screenWidth) => screenWidth * 0.04;
 
 List<Status> statuses = [

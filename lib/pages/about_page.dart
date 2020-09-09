@@ -53,6 +53,7 @@ class Profile extends StatelessWidget {
         children: [
           Image(
             image: profilePic,
+            fit: BoxFit.cover,
             width: screenWidth * 0.8,
           ),
           Container(
