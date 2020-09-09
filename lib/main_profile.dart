@@ -25,7 +25,7 @@ class MainProfile {
     prefs.remove('color_blind');
   }
 
-  static ColorBlindType get colorBlindType => ColorBlindTypes.all[_colorBlindIndex];
+  static ColorBlindType get colorBlindType => ColorBlindTypes.all[_colorBlindIndex ?? 0];
 
   static set colorBlindType(ColorBlindType colorBlindType) {
     int value = ColorBlindTypes.getIndex(colorBlindType);

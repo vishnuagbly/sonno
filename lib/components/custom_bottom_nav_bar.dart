@@ -49,9 +49,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           _selectedIndex = index;
         });
         Widget page = loadHomePageData();
-        if(index == 1) page = VisualsPage();
-        else if (index == 2) page = HeatMap();
-        else if(index == 3) page = ProfilePage();
+        if (index == 1)
+          page = VisualsPage();
+        else if (index == 2)
+          page = HeatMap();
+        else if (index == 3) page = ProfilePage();
         Navigator.pushReplacement(
           context,
           createSlidingRoute(

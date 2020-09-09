@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sonno/main_profile.dart';
 
 class Status {
-  final Color _color;
-  final Color _colorBlind;
+  final int _index;
   final String text;
 
-  Color get color {
-    if(MainProfile.colorBlindType.value)
-      return _colorBlind;
-    return _color;
-  }
+  Color get color => MainProfile.colorBlindType.graphColors[_index];
 
   String get hashString => '${color.value.toString()}$text';
 
@@ -21,5 +16,5 @@ class Status {
   bool operator ==(Object other) =>
       other is Status && other.hashCode == this.hashCode;
 
-  Status(this._color, this._colorBlind, this.text);
+  Status(this.text, this._index);
 }

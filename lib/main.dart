@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/main_profile.dart';
@@ -8,10 +9,20 @@ import 'package:sonno/pages/profile_page.dart';
 import 'network.dart';
 import 'pages/pages.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Network.initApp();
   MainProfile.getColorBlind();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+//  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+//  var initializationSettingsIOS = IOSInitializationSettings();
+//  var initializationSettings = InitializationSettings(
+//      initializationSettingsAndroid, initializationSettingsIOS);
+//  await flutterLocalNotificationsPlugin.initialize(
+//    initializationSettings,
+//  );
   runApp(Phoenix(child: MyApp()));
 }
 

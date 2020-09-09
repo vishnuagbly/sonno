@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         actions: [
           IconButton(
-              icon: Icon(Icons.remove_red_eye),
+              icon: Icon(Icons.invert_colors),
               color: kPrimaryTextColor,
               iconSize: 35,
               onPressed: () {
@@ -278,8 +278,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void showColorBlindDialog() {
-    showDialog(
+  void showColorBlindDialog() async {
+    await showDialog(
         context: context,
         builder: (context) {
           return StatefulBuilder(
@@ -291,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Column(
                       children: List.generate(
-                        3,
+                        ColorBlindTypes.all.length - 1,
                         (index) => RadioListTile<ColorBlindType>(
                           value: ColorBlindTypes.all[index],
                           groupValue: MainProfile.colorBlindType,
@@ -300,7 +300,8 @@ class _HomePageState extends State<HomePage> {
                               MainProfile.colorBlindType = type;
                             });
                           },
-                          title: Text('Yes I have ${ColorBlindTypes.all[index].text} Color Blindness.'),
+                          title: Text(
+                              'Yes I have ${ColorBlindTypes.all[index].text} Color Blindness.'),
                         ),
                       ),
                     ),
