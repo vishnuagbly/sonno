@@ -7,6 +7,7 @@ class HeatMap extends StatelessWidget {
 
     return Scaffold(
       body: Container(
+        //<-----Currently Heat Maps is work in progress----->
         decoration: BoxDecoration(
             image: DecorationImage(
           image: AssetImage("assets/heat_map.png"),
