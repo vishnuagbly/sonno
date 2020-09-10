@@ -141,54 +141,58 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          child: Center(
-            child: InkWell(
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: kPrimaryBgColor,
-                child: Icon(
-                  Icons.sync,
-                  color: kPrimaryTextColor,
-                  size: 30,
-                ),
-              ),
-              onTap: () {
-                Future future;
-                if (_newData)
-                  future = Network.uploadData();
-                else
-                  future = Network.syncData(_devices);
-                showDialog(
-                  context: context,
-                  builder: (context) => FutureDialog<void>(
-                    future: future,
-                    loadingText: 'Uploading to Cloud...',
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
+        automaticallyImplyLeading: false,
         backgroundColor: kPrimaryColor,
         elevation: 0,
-        actions: [
-          IconButton(
-              icon: Icon(Icons.invert_colors),
-              color: _colorBlindColor,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              child: Center(
+                child: InkWell(
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: kPrimaryBgColor,
+                    child: Icon(
+                      Icons.sync,
+                      color: kPrimarySelectionColor,
+                      size: 30,
+                    ),
+                  ),
+                  onTap: () {
+                    Future future;
+                    if (_newData)
+                      future = Network.uploadData();
+                    else
+                      future = Network.syncData(_devices);
+                    showDialog(
+                      context: context,
+                      builder: (context) => FutureDialog<void>(
+                        future: future,
+                        loadingText: 'Uploading to Cloud...',
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            IconButton(
+                icon: Icon(Icons.invert_colors),
+                color: _colorBlindColor,
+                iconSize: 35,
+                onPressed: () {
+                  showColorBlindDialog();
+                }),
+            IconButton(
+              icon: Icon(Icons.add_circle),
+              color: kPrimarySelectionColor,
               iconSize: 35,
               onPressed: () {
-                showColorBlindDialog();
-              }),
-          IconButton(
-            icon: Icon(Icons.add_circle),
-            color: kPrimarySelectionColor,
-            iconSize: 35,
-            onPressed: () {
-              showSearchDialog();
-            },
-          ),
-        ],
+                showSearchDialog();
+              },
+            ),
+          ],
+        ),
       ),
       body: body,
       bottomNavigationBar: CustomBottomNavigationBar(),
@@ -301,13 +305,20 @@ class _HomePageState extends State<HomePage> {
                               MainProfile.colorBlindType = type;
                             });
                           },
-                          title: Text(
-                              '${ColorBlindTypes.all[index].text}'),
+                          title: Text('${ColorBlindTypes.all[index].text}'),
                         ),
                       ),
                     ),
                   ],
                 ),
+                actions: [
+                  FlatButton(
+                    child: Text('DONE'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
               );
             },
           );
