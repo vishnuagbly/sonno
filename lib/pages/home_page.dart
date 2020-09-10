@@ -150,14 +150,10 @@ class _HomePageState extends State<HomePage> {
             Container(
               child: Center(
                 child: InkWell(
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: kPrimaryBgColor,
-                    child: Icon(
-                      Icons.sync,
-                      color: kPrimarySelectionColor,
-                      size: 30,
-                    ),
+                  child: Icon(
+                    Icons.sync,
+                    color: kPrimarySelectionColor,
+                    size: 35,
                   ),
                   onTap: () {
                     Future future;
