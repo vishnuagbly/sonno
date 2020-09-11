@@ -30,6 +30,7 @@ class _InfoPageState extends State<InfoPage>
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(
@@ -77,14 +78,19 @@ class _InfoPageState extends State<InfoPage>
                                       height: 1,
                                     ),
                                   ),
-                                  Text(
-                                    widget.stationInfo.data.last.aqi
-                                        .toInt()
-                                        .toString(),
-                                    style: TextStyle(
-                                      fontSize: screenHeight * 0.125,
-                                      fontWeight: FontWeight.w100,
-                                      height: 1,
+                                  Container(
+                                    width: screenWidth * 0.5,
+                                    child: FittedBox(
+                                      child: Text(
+                                        widget.stationInfo.data.last.aqi
+                                            .toInt()
+                                            .toString(),
+                                        style: TextStyle(
+                                          fontSize: screenHeight * 0.125,
+                                          fontWeight: FontWeight.w100,
+                                          height: 1,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                   Text(
