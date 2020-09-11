@@ -38,10 +38,12 @@ class ColorGuide extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      statuses[index].text,
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.0125,
+                    FittedBox(
+                      child: Text(
+                        statuses[index].text,
+                        style: TextStyle(
+                          fontSize: screenHeight * 0.0125,
+                        ),
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.01),

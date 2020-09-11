@@ -85,23 +85,30 @@ class Advice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
-    return Column(
-      children: [
-        Image(
-          image: imageProvider,
-          width: screenWidth * 0.1,
+    return Container(
+      height: screenHeight * 0.085,
+      child: FittedBox(
+        child: Column(
+          children: [
+            Image(
+              image: imageProvider,
+              width: screenWidth * 0.1,
+            ),
+            SizedBox(height: screenWidth * 0.01),
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: screenWidth * 0.04,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Text(adviceText),
+          ],
         ),
-        SizedBox(height: screenWidth * 0.01),
-        Text(
-          name,
-          style: TextStyle(
-            fontSize: screenWidth * 0.04,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        Text(adviceText),
-      ],
+      ),
     );
   }
 }

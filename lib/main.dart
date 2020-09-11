@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter/services.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:sonno/constants.dart';
 import 'package:sonno/main_profile.dart';
@@ -13,8 +14,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Network.initApp();
   MainProfile.getColorBlind();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+//  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//      FlutterLocalNotificationsPlugin();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
 //  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
 //  var initializationSettingsIOS = IOSInitializationSettings();
@@ -26,10 +27,13 @@ void main() async {
   runApp(Phoenix(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget{
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       title: 'Sonno',
       theme: ThemeData.dark().copyWith(
